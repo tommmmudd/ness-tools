@@ -1,5 +1,3 @@
-# ness-tab-to-score
-Convert 6 string guitar tab files to score files for the NESS physical model
+# NESS Tools
 
-There is a current version online here:
-http://tommudd.co.uk/tabconverter
+A range of tools for working with the [NESS physical models](http://www.ness.music.ed.ac.uk)
