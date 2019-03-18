@@ -55,14 +55,26 @@ class StringInstrument(object):
         self.sr = 44100
         self.stringCount = stringCount
         self.strings = [NessString() for i in range(stringCount)]
-        self.extrastringsCount = 1
+
+        # for 12-string guitars and similar
+        self.doubleStrings = False
+        self.extrastringsCount = 1      # e.g. 1 extra string per string for a 12-string
         self.extrastrings = [NessString() for i in range(stringCount*self.extrastringsCount)]
-        self.defaultGuitar()
+
+        # extra fingers are used for palm muting
+        self.palmmuting = False
+        self.palmmuteFingerStrings = ["" for a in range(self.stringCount)]
+
+        # initialise as defaultGuitar?
+        #self.defaultGuitar()
         self.regularStrings = ["Low E"]
+
+        # if false, these elements are ommitted in instrument file
         self.backboard = True
         self.fingers = True
         self.frets = True
-        self.doubleStrings = False
+        
+
         self.fretHeight = -0.001
         self.backboardParams = [-0.002, -0.000, -0.0002]    #ALL NEGATIVE OR ZERO parabola: b(x) = b0+b1*x+b2*x^2, where backboard =% [b0 b1 b2]]
         self.barrier = [1e10, 1.3, 10, 20, 1e-12]
