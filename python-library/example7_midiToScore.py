@@ -37,11 +37,11 @@ my_score = guitar.GuitarScore(0, numberOfStrings)
 
 
 # import a txt tab file (have a look at the structure of this text file for guidance)
-midiFile = "midi/bach.mid"
+midiFile = "midi/horses.mid"
 
 # specify the playback rate for this tab.
 # where a value of 1 is 1/8 of a second per unit, 2 is 1/16 of a second per unit, 0.5 is 1/4 of a second per unit, etc
-rate = 1.0
+rate = 0.6
 
 # you can use this variable to transpose the whole score by N semitones
 # e.g. this transposes the score down by 5 semitones

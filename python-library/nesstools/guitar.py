@@ -1420,7 +1420,7 @@ class GuitarScore(object):
 
 
 
-    def tabToScore(self, tabFile, stringCount=6, rate=1.0, higherFrets=True):
+    def tabToScore(self, tabFile, stringCount=6, rate=1.0, higherFrets=True, pluckForce=0.08, fingerForce=1.8):
         """Convert a txt file of guitar tab to a NESS score file
 
         Tab should be in lines in the following format:
@@ -1441,15 +1441,12 @@ class GuitarScore(object):
 
         #rate = 1.0
         pluckPos = 0.85;
-        # pluckFF = 0.18       # PREVIOUSLY !!!
+        # pluckF = 0.08       # PREVIOUSLY !!!
         alwaysPluck = False     # if this is False, it'll just do it with finger slides unless it is a repeated note
-        pluckF = 0.08
-        fingerForce = 1.8;
+        #fingerForce = 1.8;
         fingerNegativeForce = -1;
-        capoPos = 0
         offsetVal = 1;      # offset for end of line things?
         glideTime = 0.004;
-        distanceBehindFret = 0.0035
         #higherFrets = True     # if False, "12" would mean fret 1 then fret 2
         #stringCount = 6
         
@@ -1468,8 +1465,8 @@ class GuitarScore(object):
         
         print (tab)
         
-        strings = self.parseTab(tabLines, offsetVal, capoPos, higherFrets, stringCount);
-        scoreVariables = self.createScoreVariables(strings, rate, pluckPos, pluckF, fingerForce, fingerNegativeForce, glideTime, stringCount, alwaysPluck);
+        strings = self.parseTab(tabLines, offsetVal, self.capo, higherFrets, stringCount);
+        scoreVariables = self.createScoreVariables(strings, rate, pluckPos, pluckForce, fingerForce, fingerNegativeForce, glideTime, stringCount, alwaysPluck);
         self.fingerStrings = scoreVariables[0];
         self.T = int(scoreVariables[1]+8);
         if isinstance(tabFile, str):
