@@ -15,6 +15,7 @@ my_score = guitar.GuitarScore(60, 2)
 pluckTime = 1
 pluckString = 1
 my_score.plucks.append( [pluckString, pluckTime, 0.8, 0.0001, 1] )
-my_score.write("basic_score.m")```
+my_score.write("basic_score.m")
+```
 
 Currently includes classes for the brass, guitar and soundboard models
