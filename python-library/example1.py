@@ -20,9 +20,11 @@ my_guitar.write("basic_guitar.m")
 # Create a score object, specifying the total duration (T) and the string count (numberOfStrings)
 my_score = guitar.GuitarScore(60, 2)       
 
-my_score.plucks.append( [] )
+
+# create a pluck on a particular string at a particular time, with a given position, duratin and force
+pluckTime = 1
+pluckString = 1
+my_score.plucks.append( [pluckString, pluckTime, 0.8, 0.0001, 1] )
+
 # explort the score as a NESS-compatible score file
 my_score.write("solo_score.m")
-
-
-def tabToScore(tabString):
