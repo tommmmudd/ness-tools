@@ -7,7 +7,8 @@ Example implementation
 ```python
 from nesstools import guitar
 
-my_guitar = guitar.StringInstrument(2)
+stingCount = 6
+my_guitar = guitar.StringInstrument(stingCount)
 my_guitar.defaultGuitar()
 my_guitar.write("basic_guitar.m")
 
