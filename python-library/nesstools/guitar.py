@@ -348,7 +348,7 @@ class GuitarScore(object):
         self.prevFrets = ["0" for a in range(self.stringCount)]
         self.pluckF = pluckF
         self.fretFingerPos = 0.75
-        self.fingerHeight = 0.01
+        self.fingerHeight = 0.0
         self.distanceBehindFret = 0.0035
         self.capo = 0
         self.timingPatterns = []

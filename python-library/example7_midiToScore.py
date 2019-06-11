@@ -45,7 +45,7 @@ rate = 0.6
 
 # you can use this variable to transpose the whole score by N semitones
 # e.g. this transposes the score down by 5 semitones
-transpose = -5
+transpose = 0
 
 # convert the tab to score information in the my_score object, specifying the number of strings and the rate
 # NOTE: this process assumes a regularly tuned guitar!
