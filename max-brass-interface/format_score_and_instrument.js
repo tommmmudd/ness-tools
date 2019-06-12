@@ -9,6 +9,7 @@ outlets = 5;
 
 // SCORE VARIABLES
 var T = 0;
+var runningT = 0;
 var valveCount = 3;
 var lipFreq = new Array();
 var init = [0.0, 30.0];
@@ -63,6 +64,7 @@ var inst_mid_section_count = 3;
 
 function bang() {
 	var totalTime = Math.floor(previousNoteEndMS*0.001) + 1;
+	if (totalTime < runningT) { totalTime = runningT;}	// taken from addNote function
 	post("total time = "+totalTime);
 	outlet(0, "clear");
 	outlet(3, "clear");
@@ -152,6 +154,7 @@ function addNote(t_ms, pitch, vel, dur) {
 	}
 	
 	previousNoteEndMS = t_ms + dur;
+	if (previousNoteEndMS > runningT) {runningT = previousNoteEndMS;}
 	previousPitch = pitch;
 }
 function addLF(t, p) { // seconds and MIDI pitches
