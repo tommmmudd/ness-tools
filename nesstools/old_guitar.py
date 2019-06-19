@@ -1,10 +1,8 @@
 # NESS FUNCTIONS!!
-from . import brass
 import random as r
 
 # fr MIDI strings
 from midiutil.MidiFile import MIDIFile
-import midi
 
 # BRASS
 
@@ -38,9 +36,6 @@ fretsDiminished = [stringFretsEThick, stringFretsA, stringFretsD, stringFretsG, 
 
 fretSets = [fretsEMinor, fretsFMinor, fretsDiminished]
 
-startingFrets = [40, 45, 50, 55, 59, 64];
-earthStartingFrets = [33, 40, 45, 50, 54, 59];
-
 class StringInstrument(object):
     """String Instrument class for generating instruments for the NESS physical model
 
@@ -55,28 +50,13 @@ class StringInstrument(object):
         self.sr = 44100
         self.stringCount = stringCount
         self.strings = [NessString() for i in range(stringCount)]
-
-        # for 12-string guitars and similar
-        self.doubleStrings = False
-        self.extrastringsCount = 1      # e.g. 1 extra string per string for a 12-string
-        self.extrastrings = [NessString() for i in range(stringCount*self.extrastringsCount)]
-
-        # extra fingers are used for palm muting
-        self.palmmuting = False
-        self.palmmuteFingerStrings = ["" for a in range(self.stringCount)]
-
-        # initialise as defaultGuitar?
-        #self.defaultGuitar()
+        self.defaultGuitar()
         self.regularStrings = ["Low E"]
-
-        # if false, these elements are ommitted in instrument file
         self.backboard = True
         self.fingers = True
         self.frets = True
-        
-
         self.fretHeight = -0.001
-        self.backboardParams = [-0.002, -0.000, -0.0002]    #ALL NEGATIVE OR ZERO parabola: b(x) = b0+b1*x+b2*x^2, where backboard =% [b0 b1 b2]]
+        self.backboardParams = [-0.001, -0.000, -0.0002]    #ALL NEGATIVE OR ZERO parabola: b(x) = b0+b1*x+b2*x^2, where backboard =% [b0 b1 b2]]
         self.barrier = [1e10, 1.3, 10, 20, 1e-12]
         self.fingerMass = 0.005
         self.fingerStiffness = 1e7
@@ -97,17 +77,6 @@ class StringInstrument(object):
         self.strings.append( NessString(0.88, 2e11, 9.2, 0.00015, 7850, 15, 3) )
         self.strings.append( NessString(0.88, 2e11, 10.5, 0.00012, 7850, 15, 3) )
 
-    def bass6String(self, kind="regular"):
-        """Setup the strings for a 6 string bass guitar - with two higher strings"""
-        self.stringCount = 6
-        self.strings = []
-        self.strings.append( NessString(0.88, 2e11, 4.8, 0.0002, 7850, 15, 3) )
-        self.strings.append( NessString(0.88, 2e11, 9.3, 0.0002, 7850, 15, 3) )
-        self.strings.append( NessString(0.88, 2e11, 9.2, 0.00015, 7850, 15, 3) )
-        self.strings.append( NessString(0.88, 2e11, 10.5, 0.00012, 7850, 15, 3) )
-        self.strings.append( NessString(0.88, 2e11, 10.2, 0.0001, 7850, 15, 4) )
-        self.strings.append( NessString(0.88, 2e11, 13.5, 0.0001, 7850, 15, 5) )
-
     def defaultGuitarAndBass(self):
         """Combined guitar and bass instrument (10 strings - guitar is the first 6)"""
         self.stringCount = 10
@@ -118,37 +87,6 @@ class StringInstrument(object):
         self.strings.append( NessString(0.88, 2e11, 9.3, 0.0002, 7850, 15, 3) )
         self.strings.append( NessString(0.88, 2e11, 9.2, 0.00015, 7850, 15, 3) )
         self.strings.append( NessString(0.88, 2e11, 10.5, 0.00012, 7850, 15, 3) )
-
-    def default12String(self):
-        self.stringCount = 6
-        self.doubleStrings = True
-        self.extrastrings = []
-        for i in range(self.stringCount):
-            self.setRegularString(i, i)
-        self.extrastrings.append ( NessString(0.34, 2e11, 10.5, 0.00012, 7850, 15, 3) )
-        self.extrastrings.append ( NessString(0.34, 2e11, 12.3, 0.00015, 7850, 15, 5) )
-        self.extrastrings.append ( NessString(0.34, 2e11, 21.9, 0.00015, 7850, 15, 5) )
-        self.extrastrings.append ( NessString(0.34, 2e11, 39.2, 0.00015, 7850, 15, 7) )
-        self.extrastrings.append ( NessString(0.34, 2e11, 27.6, 0.0001, 7850, 15, 5) )
-        self.extrastrings.append ( NessString(0.34, 2e11, 49.2, 0.0001, 7850, 15, 8) )
- 
-    def add12String(self):
-        self.doubleStrings = True
-        self.extrastrings = []
-        for string in self.strings:
-            self.extrastrings.append ( NessString(string.length*0.5, string.ym, string.tension, string.radius, string.density, string.lowDecay, string.highDecay) )
-
-    def addNString(self):
-        self.doubleStrings = True
-        self.extrastrings = []
-        for i in range(self.extrastringsCount):
-            for string in self.strings:
-                #slightRandomisation = r.random()*0.01 + 0.495
-                slightRandomisation = 1.0
-                for j in range(i+1):
-                    slightRandomisation *= 0.5
-                self.extrastrings.append ( NessString(string.length*slightRandomisation, string.ym, string.tension, string.radius, string.density, string.lowDecay, string.highDecay) )
-       
 
     def earthGuitarAndBass(self):
         """Lower guitar and bass instrument a la Earth (10 strings - guitar is the first 6)"""
@@ -226,14 +164,6 @@ class StringInstrument(object):
         elif kind == "High D":             self.strings[ind] = NessString(0.68, 2e11, 39.2, 0.0001, 7850, 15, 8)
         else: self.strings[ind] = NessString(); #print ("unknown type, using Low E\n")
 
-    def tuneString(self, s, note):
-        #starting_frets = [40, 45, 50, 55, 59, 64]
-        string = self.strings[s]
-        newTension = pow(string.length * 2 * mtof(note), 2) * string.density * 3.141593 * string.radius*string.radius
-        #print(newTension)
-        self.strings[s].tension = newTension
-        
-
     def detune(self, detuneAmount):
         """Randomly detune all the strings by up to +/- detuneAmount"""
         for string in self.strings:
@@ -250,31 +180,17 @@ class StringInstrument(object):
         for i, string in enumerate(self.strings):
             out.write("%.4f %i %.2f %.6f %i %i %i" % (string.length, string.ym, string.tension, string.radius, string.density, string.lowDecay, string.highDecay))
             if i!=(len(self.strings)-1): out.write(";")
-        if (self.doubleStrings):
-            out.write(";")
-            for i, string in enumerate(self.extrastrings):
-                out.write("%.4f %i %.2f %.6f %i %i %i" % (string.length, string.ym, string.tension, string.radius, string.density, string.lowDecay, string.highDecay))
-                if i!=(len(self.extrastrings)-1): out.write(";")
         out.write("];\n\n")
         out.write("output_def = [")
         for i, string in enumerate(self.strings):
             out.write(str(i+1)+" "+str(string.outputPos))
             if i != (len(self.strings)-1):
                 out.write("; ")
-        if (self.doubleStrings):
-            out.write("; ")
-            for i, string in enumerate(self.extrastrings):
-                out.write(str(i+1+self.stringCount)+" "+str(string.outputPos))
-                if i != (len(self.extrastrings)-1):
-                    out.write("; ")
         out.write("];\n\n")
         out.write("normalize_outs = 1;\n\n")
         out.write("pan = [")
         for i, string in enumerate(self.strings):
             out.write(str(string.pan) + " ")
-        if (self.doubleStrings):
-            for i, string in enumerate(self.extrastrings):
-                out.write(str(string.pan) + " ")
         out.write("];\n\n")
         out.write("barrier_params_def = [%.2f %.2f %.1f %.1f %.13f];\n\n" % (self.barrier[0], self.barrier[1], self.barrier[2], self.barrier[3], self.barrier[4] ))
         if self.backboard:
@@ -336,25 +252,17 @@ class GuitarScore(object):
         self.stringCount = stringCount
         self.T = T
         self.fingerStrings = ["" for a in range(self.stringCount)]
-        self.fingers = True
-        self.doubleStrings = False
-        self.extrastringsCount = 1
-        self.extraFingerStrings = ["" for a in range(self.stringCount*self.extrastringsCount)]
-        self.palmmuting = False
-        self.palmmuteFingerStrings = ["" for a in range(self.stringCount)]
         self.plucks = [[1, 0.5, 0.8, 0.0025, 0.0005]]         # initial pluck, otherwise it won't run. Could remove
         self.strums = []
         self.frets = ["0.331" for a in range(self.stringCount)]
         self.prevFrets = ["0" for a in range(self.stringCount)]
         self.pluckF = pluckF
-        self.fretFingerPos = 0.75
-        self.fingerHeight = 0.0
         self.distanceBehindFret = 0.0035
         self.capo = 0
         self.timingPatterns = []
         self.chordPatterns = []
         self.fretPositions = [0.0, 0.056, 0.109, 0.159, 0.206, 0.251, 0.293, 0.333, 0.370, 0.405, 0.439, 0.47, 0.5,   0.528, 0.555, 0.58, 0.603, 0.625, 0.646, 0.667, 0.685 ]
-        self.harmonics = [1/2.0, 1/3.0, 1/4.0, 1/5.0, 2/5.0, 1/6.0, 1/7.0, 1/8.0, 3/8.0, 1/9.0, 2/9.0, 4/9.0, 1/10.0, 3/10.0, 1/11.0]
+        self.harmonics = [1/2.0, 1/3.0, 1/4.0, 1/5.0, 2/5.0, 1/6.0]
         self.midiOutput = MIDIStrings(stringCount, 120,  "Automatically adding MIDI file for trigger sync")
         self.addDefaultTimingPattern()
         self.addDefaultChordPattern(len(self.timingPatterns[0]))
@@ -383,90 +291,6 @@ class GuitarScore(object):
         timingPattern = [1, 0.5, 1, 0.5, 1, 0.5, 0.25, 0.25]
         self.timingPatterns.append( timingPattern )
 
-    def playNote(self, startTime=0, note=60, pluckF=0.05, glideTime=0.001):
-        t = startTime
-        onF = "10"
-        s, fret = self.midiToStringFret(note)
-        self.frets[s] = str( max(self.fretPositions[fret] - self.distanceBehindFret, 0) )
-        self.fingerStrings[s] += str(t-glideTime)+" "+self.prevFrets[s]+" "+onF+"; "
-        self.fingerStrings[s] += str(t)+" "+self.frets[s]+" "+onF+"; "
-        self.prevFrets[s] = self.frets[s]
-        #self.plucks.append( self.makePluck(s+1, t+0.01, pluckF) )
-
-    def playFret(self, startTime=0, s=0, fret=0, glideTime=0.001):
-        t = startTime
-        onF = "10"
-        self.frets[s] = str( max(self.fretPositions[fret] - self.distanceBehindFret, 0) )
-        self.fingerStrings[s] += str(t-glideTime)+" "+self.prevFrets[s]+" "+onF+"; "
-        self.fingerStrings[s] += str(t)+" "+self.frets[s]+" "+onF+"; "
-        self.prevFrets[s] = self.frets[s]
-        #self.plucks.append( self.makePluck(s+1, t+0.01, pluckF) )
-
-
-    def midiToStringFret(self, note):
-        string_and_fret = [0, 0]
-        while (note < startingFrets[0]):
-            note += 12
-        while (note > startingFrets[5]+19):
-            note -= 12
-        if (note < startingFrets[1]):
-            string_and_fret = [0, note-startingFrets[0]]
-        elif (note < startingFrets[2]):
-            string_and_fret = [1, note-startingFrets[1]]
-        elif (note < startingFrets[3]):
-            string_and_fret = [2, note-startingFrets[2]]
-        elif (note < startingFrets[4]):
-            string_and_fret = [3, note-startingFrets[3]]
-        elif (note < startingFrets[5]):
-            string_and_fret = [4, note-startingFrets[4]]
-        else:
-            string_and_fret = [5, note-startingFrets[5]]
-        return string_and_fret[0], string_and_fret[1]
-
-
-    def gtrFromBrassScore(self, s, brassScore):
-        print("gtrFromBrassScore", len(brassScore.pressure))
-        self.T = brassScore.time
-        pressureList = []
-        pressureTimesList = []
-        maxPressure = 0
-        lfList = []
-        lfTimesList = []
-        combinedList = []
-        for item in brassScore.pressure:
-            pressureTimesList.append( item[0] )
-            pressureList.append( item[1] )
-            if (item[1] > maxPressure): maxPressure = item[1]
-        for item in brassScore.lip_frequency:
-            lfTimesList.append( item[0] )
-            fingerPos = (item[1] / 880.0)
-            if fingerPos > 0.8: fingerPos = 0.8
-            lfList.append( fingerPos )
-
-
-
-        print("Creating Guitar score from Brass", len(lfList), lfList)
-        current_lf = lfList[0]
-        current_lf_t = lfTimesList[0]
-        current_p = 0
-        for i, pItem in enumerate(brassScore.pressure):
-            t = pItem[0]
-            current_p = 20 * pItem[1] / float(maxPressure)
-            self.fingerStrings[s] += str(t)+" "+str(current_lf)+" "+str(current_p)+"; "
-            if i==(len(brassScore.pressure)-1):
-                nextT = self.T
-            else:
-                nextT = brassScore.pressure[i+1][0]
-            print("between", t, nextT)
-            for lfT, lf in zip(lfTimesList, lfList):
-                if lfT >= t and lfT < nextT:
-                    print("found", lfT, lf)
-                    self.fingerStrings[s] += str(lfT+0.002)+" "+str(lf)+" "+str(current_p)+"; "
-                    current_lf = lf
-                    current_lf_t = lfT
-                    
-            
-
 
     def write(self, fName):
         """Output the score in its current state as 'fName' for use with the NESS model"""
@@ -476,8 +300,7 @@ class GuitarScore(object):
             # arbitrary end fingering?? is that necessary?
             #self.fingerStrings[s] += str(self.T-5)+" "+self.prevFrets[s]+" "+str(1)+"], [0.01, 0];\n"
             # no end finger
-            self.fingerStrings[s] += "], ["+str(self.fingerHeight)+", 0];\n"
-            self.palmmuteFingerStrings[s] += "], ["+str(self.fingerHeight)+", 0];\n"
+            self.fingerStrings[s] += "], [0.01, 0];\n"
         out = open(fName, 'w')
         out.write("Tf = "+str(self.T)+";\n\n")
         out.write("exc = [];\n\n")
@@ -488,17 +311,6 @@ class GuitarScore(object):
                     out.write(str(param)+", ")
                 else:
                     out.write(str(param)+");\n\n")
-        if self.doubleStrings:
-            for pluck in self.plucks:
-                out.write("exc = pluck_gen(exc, ")
-                for j in range(self.extrastringsCount):
-                    for i, param in enumerate(pluck):
-                        if i==0:
-                            out.write(str(param+self.stringCount*(j+1))+", ")
-                        elif i != (len(pluck) - 1):
-                            out.write(str(param)+", ")
-                        else:
-                            out.write(str(param)+");\n\n")
         for strum in self.strums:
             out.write("exc = strum_gen(exc, ")
             for i, param in enumerate(strum):
@@ -506,24 +318,13 @@ class GuitarScore(object):
                     out.write(str(param)+", ")
                 else:
                     out.write(str(param)+");\n\n")
-        if self.fingers:
-            out.write("finger_def = {")
-            #for i in range(stringCount):
-            for i, f_string in enumerate(self.fingerStrings):
-                out.write("\n    "+str(i+1)+", [0 "+str(self.fretPositions[5])+" 0; ")   # gotta start somewhere?? Eh?
-                out.write(f_string)
-            if self.doubleStrings:
-                for j in range(self.extrastringsCount):
-                    for i, f_string in enumerate(self.fingerStrings):
-                        out.write("\n    "+str(i+1+self.stringCount*(j+1))+", [0 "+str(self.fretPositions[5])+" 0; ")   # gotta start somewhere?? Eh?
-                        out.write(f_string)
-            if self.palmmuting:
-                for i, f_string in enumerate(self.palmmuteFingerStrings):
-                    out.write("\n    "+str(i+1)+", [0 "+str(self.fretPositions[5])+" 0; ")   # gotta start somewhere?? Eh? NO: use initial finger pos
-                    out.write(f_string)
-            out.write("\n};")
+        out.write("finger_def = {")
+        #for i in range(stringCount):
+        for i, f_string in enumerate(self.fingerStrings):
+            out.write("\n    "+str(i+1)+", [0 "+str(self.fretPositions[5])+" 0; ")   # gotta start somewhere?? Eh?
+            out.write(f_string)
+        out.write("\n};")
         out.close()
-
 
     def makePluck(self, num, time, strength=1, pos=0.8, dur=0.001):
         """Generate a five element pluck list to be added to the plucks attribute"""
@@ -1031,634 +832,6 @@ class GuitarScore(object):
                 i+=1
                 t += tScale*timingArray[i % len(timingArray)]
 
-    def structureTwoChordPicking(self, startTime, endTime):
-
-        # oscillate between first two chords in self.chordPatterns
-        # slowly accelerate
-        # finger picking-like string selectino (moving thumb)
-        t = startTime
-        tScale = 4
-        stringOrder = [[0, 5], [2], [4], [1], [5],  [2], [4], [0, 5], [2, 3], [4], [0], [5],  [2], [3]]
-        timingOrder = [1, 0.667, 0.333, 0.667, 0.333, 0.667, 0.333]
-        stringOrder2 = [[0], [5], [4], [2], [5], [0], [5],  [2], [5], [0, 4], [2, 4], [5], [1], [5],  [3], [3]]
-        timingOrder2 = [0.333, 0.334, 0.333, 0.665, 0.343, 0.667, 0.333, 0.667, 0.333]
-        stringOrder3 = [[0, 4, 5], [3, 5], [4],   [1, 2], [5],   [4],  [0],   [5],    [0],  [0, 4], [4], [3], [2],   [0],    [5],   [1],   [4, 3], [0],   [4],  [2],   [5]]
-        timingOrder3 = [0.333,     0.334,  0.333, 0.333,  0.343, 0.324, 0.667, 0.333, 0.667, 0.233, 0.05, 0.05, 0.05, 0.617, 0.333,  0.667, 0.333, 0.667, 0.333, 0.667, 0.333 ]
-        whichChord = [0 for i in range(self.stringCount)]
-
-        oldTimes = [0 for i in range(self.stringCount)]
-        localGlideTime = 0.0035
-
-        jitters = []
-        onF = "1"
-        chordMax = 2
-        decayRate = 0.9975
-        decayRateSlow = 0.9987
-        self.capo = 1
-        self.distanceBehindFret = 0.01
-        onForce = 0
-        changeSet = 0
-        chordSet = 0
-
-        i = 0
-        while t < endTime:
-            if t < endTime/3:
-                onForce = 20*3 *t/float(endTime)
-            elif t < 2*endTime/3:
-                onForce = 20 - (20*t/float(endTime))
-            elif t < 3*endTime/4:
-                onForce = 4*3 * t/float(endTime)
-            onF = str(onForce)
-            if (r.random() < 0.005):
-                chordMax = r.randint(2, len(self.chordPatterns[0])-2)
-            if t < endTime/6:
-                tScale = 4
-            if t > endTime/6:
-                chordMax = 4
-            if t > endTime/5:
-                chordMax = 2
-            if t > endTime/4.7:
-                chordMax = 5;
-            if t > endTime/4.3:
-                chordMax = 3;
-            if t > endTime/4:
-                chordMax = 3
-            if t > endTime/2:
-                chordMax = 4;
-                chordSet = 1
-            if t > endTime/1.5:
-                chordMax = 4;
-                chordSet = 0
-            if t > endTime/1.25:
-                chordMax = 6;
-                chordSet = 2;
-                
-            if t > endTime/2:
-                stringOrder = stringOrder2
-                timingOrder = timingOrder2
-            if t> 2*endTime/3:
-                stringOrder = stringOrder3
-                timingOrder = timingOrder3
-            
-            jitters.append( r.random()*0.01 )
-            for s in stringOrder[i%len(stringOrder)]:
-                fretNum = self.chordPatterns[chordSet][whichChord[s]][s]
-                fretPos = self.fretPositions[ self.capo + fretNum]
-                self.frets[s] = str(fretPos - self.distanceBehindFret)
-
-                if r.random() < 0.05:
-                    localGlideTime = 0.4*r.random()*r.random()*((t+jitters[i]) - oldTimes[s])
-                    if localGlideTime < 0.0035: localGlideTime = 0.0035
-                else:
-                    localGlideTime = 0.0035
-
-                if (self.frets[s] == self.prevFrets[s]):
-                    fretNum = self.chordPatterns[chordSet][whichChord[s]+r.randint(2, 3)][s]
-                    fretPos = self.fretPositions[ self.capo + fretNum]
-                    self.frets[s] = str(fretPos - self.distanceBehindFret)
-                self.fingerStrings[s] += str(t+jitters[i]-localGlideTime)+" "+self.prevFrets[s]+" "+onF+"; "
-                self.fingerStrings[s] += str(t+jitters[i])+" "+self.frets[s]+" "+onF+"; "
-                whichChord[s] = (whichChord[s] + 1) % chordMax
-                self.prevFrets[s] = self.frets[s]
-
-            if (t < endTime/1.5):
-                if tScale < 0.5:
-                    tScale *= decayRateSlow
-                else:
-                    tScale *= decayRate;
-            else:
-                tScale /= decayRateSlow
-            if tScale < 0.03: tScale = 0.03;
-            t += timingOrder[i%len(timingOrder)] * tScale * 0.25
-            i += 1
-
-
-    def structureMichele(self, startTime, endTime):
-
-        # oscillate between first two chords in self.chordPatterns
-        # slowly accelerate
-        # finger picking-like string selectino (moving thumb)
-        t = startTime
-        tScale = r.random()*4 + 0.1
-
-        # create melodic chord patterns in Gm / G dorian
-        chordA = [3, 3, 5, 5, 4, 3]
-        chordB = [5, 5, 7, 7, 6, 5]
-        chordC = [3, 5, 5, 3, 3, 3]
-        chordD = [1, 3, 3, 2, 1, 1]
-        chordE = [4, 6, 6, 5, 4, 4]
-        chordF = [6, 8, 8, 7, 6, 6]
-        chords1 = [chordA, chordB, chordC, chordD]
-        chords2 = [chordE, chordF, chordD]
-        self.chordPatterns = []
-        for a in range(5):
-            if a==0:
-                self.chordPatterns.append( [chords1[r.randint(0, len(chords1)-1)] for i in range(r.randint(2,4))] )   # note that this should be an array of arrays
-            elif a==1:
-                self.chordPatterns.append( [chords2[r.randint(0, len(chords2)-1)] for i in range(r.randint(2,4))] )   # note that this should be an array of arrays
-            else:
-                self.chordPatterns.append( [chords1[r.randint(0, len(chords1)-1)] for i in range(r.randint(2,4))] )   # note that this should be an array of arrays
-
-        stringOrder1 = [[0, 5], [2], [4], [1], [5],  [2], [4], [0, 5], [2, 3], [4], [0], [5],  [2], [3]]
-        timingOrder1 = [1, 0.667, 0.333, 0.667, 0.333, 0.667, 0.333]
-        stringOrder2 = [[0], [5], [4], [2], [5], [0], [5],  [2], [5], [0, 4], [2, 4], [5], [1], [5],  [3], [3]]
-        timingOrder2 = [0.333, 0.334, 0.333, 0.665, 0.343, 0.667, 0.333, 0.667, 0.333]
-        stringOrder3 = [[0, 4, 5], [3, 5], [4],   [1, 2], [5],   [4],  [0],   [5],    [0],  [0, 4], [4], [3], [2],   [0],    [5],   [1],   [4, 3], [0],   [4],  [2],   [5]]
-        timingOrder3 = [0.333,     0.334,  0.333, 0.333,  0.343, 0.324, 0.667, 0.333, 0.667, 0.233, 0.05, 0.05, 0.05, 0.617, 0.333,  0.667, 0.333, 0.667, 0.333, 0.667, 0.333 ]
-        stringOrder4 = [[0, 4], [2, 3], [0],   [5],   [0, 3]]
-        timingOrder4 = [1,      1,      0.667, 0.333, 1]
-        stringOrder5 = [[0], [5],   [1], [4], [1],  [5],  [2],  [4], [0, 5], [2, 3]]
-        timingOrder5 = [0.55, 0.45, 0.5, 0.5, 0.51, 0.49, 0.25, 0.25, 0.25, 0.25]
-        stringOrder6 = [[3],    [4],   [5],   [0],   [5],     [0],   [5],  [0],  [5],    [2],[3],[4],   [2],[4],  [2],[4],  [1],[3]]
-        timingOrder6 = [0.1665, 0.1665, 0.167, 0.333, 0.167, 0.333, 0.167, 0.333, 0.167]
-        stringOrder7 = [[3, 5], [4],  [5],  [4], [5], [0],   [4],  [5]]
-        timingOrder7 = [0.25, 0.25, 0.24, 0.26, 0.51, 0.24, 0.25, 0.125, 0.875]
-        stringOrder8 = [[0],  [5],  [4],  [3],   [2],   [1],  [0], [2, 6], [3, 4], [3, 4]]
-        timingOrder8 = [0.05, 0.03, 0.055, 0.065, 0.04, 0.05, 0.7, 0.667, 0.667, 0.666]
-        timingOrders = [timingOrder1,  timingOrder2, timingOrder3, timingOrder4, timingOrder5, timingOrder6, timingOrder7, timingOrder8]
-        stringOrders = [stringOrder1,  stringOrder2, stringOrder3, stringOrder4, stringOrder5, stringOrder6, stringOrder7, stringOrder8]
-        tempoScales = [1, 2, 1, 3, 5, 2, 3, 4, 1, 3, 5, 3, 6, 2, 3, 4, 2, 3, 4]
-        eventCount = 8
-        eventIndexes = [r.randint(0, len(timingOrders)-1) for i in range(eventCount)]
-        eventTimes = [i/float(eventCount) for i in range(eventCount)]
-        eventTimes.sort()
-        whichChord = [0 for i in range(self.stringCount)]
-
-        oldTimes = [0 for i in range(self.stringCount)]
-        localGlideTime = 0.0035
-
-        jitters = []
-        onF = "1"
-        chordMax = 2
-        decayRate = 0.9995
-        decayRateSlow = 0.99995
-        self.capo = 1
-        self.distanceBehindFret = 0.01
-        onForce = 0
-        changeSet = 0
-        chordSet = 0
-
-        stringOrder = stringOrder4
-        timingOrder = timingOrder4
-        newSectionFlag = True
-        currentSection = 0
-        self.distanceBehindFret = 0
-
-        i = 0
-        while t < endTime:
-            if t < endTime/3:
-                onForce = r.random()*5 + 0.5     #20*3 *t/float(endTime)
-            elif t < 2*endTime/3:
-                onForce = r.random()*5 + 0.5
-            elif t < 3*endTime/4:
-                onForce = r.random()*5 + 0.5     #4*3 * t/float(endTime)
-            else:
-                onForce = r.random()*5 + 0.5
-                self.distanceBehindFret = 0
-            onF = str(onForce)
-
-            for e in range(eventCount):
-                if t > endTime*eventTimes[e]:
-                    timingOrder = timingOrders[eventIndexes[e]]
-                    stringOrder = stringOrders[eventIndexes[e]]
-                    if e > currentSection:
-                        tScale = r.random()*4 + 1
-                        currentSection = e
-                        print (tScale)
-
-            #print (eventTimes, eventIndexes)
-            #print (t, stringOrder)
-            if t > endTime*0.5:
-                #capo = 2
-                chordSet = 0
-            if t > endTime*0.7:
-                chordSet = 1
-            if t > endTime*0.85:
-                chordSet = 2
-            # if t < endTime*0.1:
-            #     tScale = 4
-            #     chordMax = 4
-            #     chordSet = 0
-            # elif t < endTime*0.2:
-            #     tScale = 3
-            #     chordSet = 1
-            #     stringOrder = stringOrder1
-            #     timingOrder = timingOrder1
-            # elif t < endTime*0.3:
-            #     tScale = 3
-            #     chordMax = 3
-            #     chordSet = 0
-            #     stringOrder = stringOrder4
-            #     timingOrder = timingOrder4
-            # elif t < endTime*0.4:
-            #     chordMax = 2
-            #     chordSet = 1
-            #     stringOrder = stringOrder1
-            #     timingOrder = timingOrder1
-            # elif t < endTime*0.5:
-            #     tScale = 2
-            #     chordSet = 2
-            #     stringOrder = stringOrder2
-            #     timingOrder = timingOrder2
-            # elif t < endTime*0.65:
-            #     chordSet = 1
-            #     chordMax = 3
-            #     stringOrder = stringOrder1
-            #     timingOrder = timingOrder1
-            # elif t < endTime*0.75:
-            #     self.capo = 2
-            #     chordSet = 0
-            #     chordMax = 4
-            #     stringOrder = stringOrder3
-            #     timingOrder = timingOrder3
-            # elif t < endTime*0.85:
-            #     tScale = 2
-            #     chordSet = 2
-
-            jitters.append( r.random()*0.01 )
-            for s in stringOrder[i%len(stringOrder)]:
-                onF = str(r.random() * 0.04)
-                chord = whichChord[s] % len(self.chordPatterns[chordSet])
-                fretNum = self.chordPatterns[chordSet][chord][s]
-                fretPos = self.harmonics[fretNum]
-                self.frets[s] = str(fretPos - self.distanceBehindFret)
-
-                if r.random() < 0.05:
-                    localGlideTime = 0.4*r.random()*r.random()*((t+jitters[i]) - oldTimes[s])
-                    if localGlideTime < 0.0035: localGlideTime = 0.0035
-                else:
-                    localGlideTime = 0.0035
-
-                if (self.frets[s] == self.prevFrets[s]):
-                    chord = (whichChord[s] + r.randint(0, 2)) % len(self.chordPatterns[chordSet])
-                    fretNum = self.chordPatterns[chordSet][chord][s]
-                    #fretPos = self.fretPositions[ self.capo + fretNum]
-                    fretPos = self.harmonics[fretNum]
-                    self.frets[s] = str(fretPos - self.distanceBehindFret)
-                self.fingerStrings[s] += str(t+jitters[i]-localGlideTime)+" "+self.prevFrets[s]+" "+onF+"; "
-                self.fingerStrings[s] += str(t+jitters[i])+" "+self.frets[s]+" "+onF+"; "
-                self.plucks.append( [s+1, t+jitters[i]+0.0005, 0.8+r.random()*0.1, 0.00001, r.random()*0.02 + 0.0125] )
-                whichChord[s] = (whichChord[s] + 1) % chordMax
-                self.prevFrets[s] = self.frets[s]
-
-            if (t < endTime/1.5):
-                if tScale < 0.5:
-                    tScale *= decayRateSlow
-                else:
-                    tScale *= decayRate;
-            else:
-                tScale /= decayRateSlow
-            if tScale < 0.03: tScale = 0.03;
-            t += timingOrder[i%len(timingOrder)] * tScale * 0.25
-            i += 1
-
-    def strumTest(self, startTime, endTime):
-        t = startTime
-        T = endTime
-        #strumRhythm = [1, 1, 1, 0.55, 0.45]
-        strumRhythm = [3, 0.55, 0.45, 2, 1.5, 0.43]
-        upDownPattern =     [0, 0,    0,    0, 0,   1]
-        tScale = 1#0.45
-        # % parameters are:
-        # %   start time of strum (s)
-        # %   duration of strum (s)
-        # %   strum up (0) or down (1)
-        # %   amplitude (N)
-        # %   random amplitude variation factor (0-1)
-        # %   pluck duration (s)
-        # %   pluck duration variation factor (0-1)
-        # %   pluck position (0-1)
-        # %   pluck position random factor (0-1)
-        # %   time randomization factor (0-1)
-
-        one = [0, 2, 2, 1, 0, 0]
-        two = [3, 2, 0, 0, 0, 3]
-        three = [5, 0, 0, 2, 3, 2]
-        four = [5, 0, 2, 2, 1, 0]
-        five = [7, 9, 9, 7, 7, 7]
-        chords = [one, two, three, five, one, two, four, five, one, two, three, three]
-        i = 0
-        glideTime = 0.01
-        onF = "0.8"
-        while t < T:
-            chordNum = i % len(chords)
-            self.strums.append( [t, r.random()*0.2 + 0.15, upDownPattern[i%len(upDownPattern)], strumRhythm[i%len(strumRhythm)], 0.1, 0.0001*t/float(T), 0, 0.73, 0.26, 0.005] )
-            #self.plucks.append( [s+1, t+jitters[i]+0.0005, 0.8+r.random()*0.1, 0.00001, r.random()*0.02 + 0.0125] )
-            for s in range(self.stringCount):
-                #chordNum = i % min(6, len(self.chordPatterns[1]))
-                
-                if t < T/2:
-                    fretNum = chords[chordNum][s]
-                    fretPos = self.fretPositions[ self.capo + fretNum ]  - self.distanceBehindFret
-                    if fretPos < 0.001: fretPos = 0.001
-                else:
-                    fretNum = chords[chordNum][s]
-                    fretPos = self.fretPositions[ self.capo + fretNum ]  - self.distanceBehindFret
-                    if fretPos < 0.001: fretPos = 0.001
-                self.frets[s] = str(fretPos)
-                self.fingerStrings[s] += str(t-glideTime)+" "+self.prevFrets[s]+" "+onF+"; "
-                self.fingerStrings[s] += str(t)+" "+self.frets[s]+" "+onF+"; "
-                self.prevFrets[s] = self.frets[s]
-            if (r.random() < 0.35):
-                self.plucks.append( [r.randint(3, 5), t+(strumRhythm[i%len(strumRhythm)]*0.5*tScale), 0.7+r.random()*0.1, 0.0001, r.random()*4] )
-            t += strumRhythm[i%len(strumRhythm)] * tScale
-            i += 1
-            tScale *= r.random()*0.05 + 0.975
-
-
-    def rapidPicking(self, startTime, endTime):
-
-        # oscillate between first two chords in self.chordPatterns
-        # slowly accelerate
-        # finger picking-like string selectino (moving thumb)
-        t = startTime
-        tScale = 0.1
-        maxRate = 0.02
-        stringOrder = [[0, 5], [2], [4], [1], [5],  [2], [4], [0, 5], [2, 3], [4], [0], [5],  [2], [3]]
-        timingOrder = [1, 0.667, 0.333, 0.667, 0.333, 0.667, 0.333]
-        whichChord = [0 for i in range(self.stringCount)]
-        oldTimes = [0 for i in range(self.stringCount)]
-        jitters = []
-        onF = "1"
-        chordMax = 3
-        decayRate = 0.9945
-        decayRateSlow = 0.9975
-        chordSet = 0
-        newSetFlag = True
-        localGlideTime = 0.0035
-
-
-        i = 0
-        while t < endTime:
-            chordSetIndex = int(len(self.chordPatterns)*t/float(endTime))
-            #chordSet = self.chordPatterns[]
-            jitters.append( r.random()*0.01 )
-            for s in stringOrder[i%len(stringOrder)]:
-                fretNum = self.chordPatterns[chordSetIndex][whichChord[s]][s]
-                fretPos = self.fretPositions[ self.capo + fretNum]
-                self.frets[s] = str(fretPos - self.distanceBehindFret)
-
-                if r.random() < 0.2:
-                    localGlideTime = 0.9*r.random()*((t+jitters[i]) - oldTimes[s])
-                else:
-                    localGlideTime = 0.0035
-                self.fingerStrings[s] += str(t+jitters[i]-localGlideTime)+" "+self.prevFrets[s]+" "+onF+"; "
-                self.fingerStrings[s] += str(t+jitters[i])+" "+self.frets[s]+" "+onF+"; "
-                oldTimes[s] = t+jitters[i]
-                whichChord[s] = (whichChord[s] + 1) % chordMax
-                self.prevFrets[s] = self.frets[s]
-
-            if r.random() < 0.47:
-                tScale *= decayRate;
-            else:
-                tScale /= decayRateSlow
-            if tScale < maxRate: tScale = maxRate;
-            elif tScale > 0.25: tScale = maxRate
-            t += timingOrder[i%len(timingOrder)] * tScale * 0.25
-            i += 1
-
-
-
-
-    def tabToScore(self, tabFile, stringCount=6, rate=1.0, higherFrets=True, pluckForce=0.08, fingerForce=1.8):
-        """Convert a txt file of guitar tab to a NESS score file
-
-        Tab should be in lines in the following format:
-        |--1-3-----... etc ...----7--3---|
-
-        the 'rate' parameter specifies the time per unit, where 1 is 1/8 of a second per unit, 2 is 1/16 of a second per unit, etc
-        if higherFrets is set to "False", then "12" would mean fret 1 then fret 2, rather than fret 12
-        """
-        #arbitraryRubato = 0.;
-        #********************
-        ## The plan here would be to:
-        ## a) keep track of the total number of timepoints in the score
-        ## b) instead of timePerUnit, have an array of time divisions
-        ## c) populate the array at the outset so that each string can read it, e.g. [0.25, 0.24, 0.23, 0.26, 0.26, etc]
-        ## d) use that to generate another, rubatoTimes array that is CUMULATIVE TIME VALUES
-        ## e) pull these out using strings[i][j][0] as AN INDEX TO THAT , rubatoTimes[strings[i][j][0]]
-        #**********************
-
-        #rate = 1.0
-        pluckPos = 0.85;
-        # pluckF = 0.08       # PREVIOUSLY !!!
-        alwaysPluck = False     # if this is False, it'll just do it with finger slides unless it is a repeated note
-        #fingerForce = 1.8;
-        fingerNegativeForce = -1;
-        offsetVal = 1;      # offset for end of line things?
-        glideTime = 0.004;
-        #higherFrets = True     # if False, "12" would mean fret 1 then fret 2
-        #stringCount = 6
-        
-        # try opening a file
-        tab = ""
-        tabLines = []
-        if isinstance(tabFile, str):
-            tab = open(tabFile, 'r')
-            tabLines = self.tabLinesFromTextFile(tab, stringCount);
-        else:
-            tab = tabFile
-            tabLines = [tab]
-        #print("Couldn't read tab line or file")
-        #finally:
-        #    f.close()
-        
-        print (tab)
-        
-        strings = self.parseTab(tabLines, offsetVal, self.capo, higherFrets, stringCount);
-        scoreVariables = self.createScoreVariables(strings, rate, pluckPos, pluckForce, fingerForce, fingerNegativeForce, glideTime, stringCount, alwaysPluck);
-        self.fingerStrings = scoreVariables[0];
-        self.T = int(scoreVariables[1]+8);
-        if isinstance(tabFile, str):
-            print ("score infomation read from "+tabFile);
-        else:
-            print ("score infomation read from input text");
-
-
-    def tabLinesFromTextFile(self, tab, stringCount):
-        """find the tablines in the raw text and return as [?]"""
-        tempTabLine = []
-        outputTabLines = []
-        for line in tab:
-            if ("|" not in line) or ("-" not in line):
-                if "-" not in line:
-                    # if there's a line with no "-" then reset the current tab line
-                    tempTabLine = []
-            else:
-                # collect the six lines together in tempTabLine
-                tempTabLine.append(line)
-            if len(tempTabLine) >= stringCount:
-                outputTabLines.append( tempTabLine )
-                tempTabLine = []
-
-        return outputTabLines
-
-
-    def parseTab(self, tabLines, offsetVal, capoPos, higherFrets, stringCount):
-        """put together the discrete timing info into STRINGS"""
-
-
-        self.fingerHeight = 0.0;
-        
-        outputStrings = [[] for i in range(stringCount)];
-        t = 0
-        tempT = 0;
-        # for each tab line (each is made up of [stringCount] lines)
-        for i, tabLine in enumerate(tabLines):
-            # for each single line in the set of [stringCount]
-            tempT = 0;  # keep count of time based on position in string
-            
-            for j, line in enumerate(tabLine):
-                stringFingers = [];   # list of [int_time, fret] pairs
-                offsetCorrection = 0;
-                skipNext = False;
-                # each char in the line
-                for k, char in enumerate(line):
-                    # tabLines[i][j][k] is each char
-                    if (skipNext):
-                        # were we told to skip this one?
-                        if (j==0):
-                            tempT += 1; 
-                        skipNext = False;
-                    else:
-
-                        if tabLines[i][j][k] == "|":
-                            offsetCorrection -= offsetVal;
-
-                        else:
-                            if (j==0):
-                                # only count the time for the first string
-                                tempT += 1; # increment the time for any char other than "|"
-                                #console.log("tempT: "+tempT+"   - "+Number(tabLines[i][j][k]))
-
-                        if (tabLines[i][j][k] != "|" and self.isNum(tabLines[i][j][k])):
-
-                            actuallyDoItNormally = True;
-                            # consider frets above 9?
-                            if higherFrets:
-                                actuallyDoItNormally = False;
-                                # check we're not going over the edge here...
-                                if (k < len(tabLines[i][j])-1):
-
-                                    # check the next step in the tab
-                                    if (tabLines[i][j][k+1] != "|" and self.isNum(tabLines[i][j][k+1])):
-                                        # only consider this if we're talking about frets beginning with 1 or 2  
-                                        if (tabLines[i][j][k] == "1" or tabLines[i][j][k] == "2"):
-                                            combinedFret = tabLines[i][j][k]+tabLines[i][j][k+1]
-                                            outputStrings[j].append( [t+k+offsetCorrection, capoPos + int(combinedFret)] );
-                                            skipNext = True;    # skip the next iteration of k
-                                        else: actuallyDoItNormally = True;
-                                    else: actuallyDoItNormally = True;
-                                else: actuallyDoItNormally = True;
-                            else: actuallyDoItNormally = True;
-
-                            # if not all of the above conditions are met, then just do it normally
-                            if (actuallyDoItNormally):
-                                outputStrings[j].append( [t+k+offsetCorrection, capoPos + int(tabLines[i][j][k])])
-                            
-                            #console.log("string "+j+"   - "+Number(tabLines[i][j][k]))
-            #console.log("Extending: "+tempT+" ")
-            t += tempT;
-            
-        return outputStrings;
-
-
-    def createScoreVariables(self, strings, rate, pluckPos, pluckF, fingerForce, fingerNegativeForce, glideTime, stringCount, alwaysPluck):
-        """get a PLUCK_DEFS and FINGER_DEFS, and return as a two element array"""
-
-        timePerUnit = 0.125 * 1.0/rate;
-        # starting from 0 up to 20th fret - ARE THESE DEFINITELY CORRECT???
-        # see image
-        # could also try this formula?
-        # Calculating Fret Spacing for a Single Fret: d = s - (s / (2 ^ (n / 12)))
-        #fretPositions = [0.0, 0.056, 0.109, 0.159, 0.206, 0.251, 0.293, 0.333, 0.370, 0.405, 0.439, 0.47, 0.5,   0.528, 0.555, 0.58, 0.603, 0.625, 0.646, 0.667, 0.685 ];
-
-        #distanceBehindFret = 0.02;
-        #glideTime = 0.004;      # for removing one finger and putting the next back on
-        fingerHeight = 0.01;
-
-        pluckJitter = 0;#0.07;
-        pluckDur = 0.005;
-
-        finger_defs = [];
-
-        # create a ghost pluck so that the score works (could add this at the end)
-        # [str_num, pluck_time, pluck_pos, pluck_dur, pluck_force]
-        #initialPluck = [1, 0, 0.8, 0.001, 0.00001];
-        #self.plucks.append( initialPluck )
-        maxT = 0;
-
-        # create a finger for each string
-
-        # get each string
-        # go backwards through strings array, as the strings are the wrong way round from a tab perspective
-        # thickest is last in tab, thinnest is first in model
-
-        # NOTE 
-
-        for i, string in enumerate(strings):
-            
-            stringNum = i+1    # for non reversed, use: stringCount-i;
-            prev_pos = 0; # this will be set before use
-            current_finger = ""#str(stringNum)+", [0 0.25 0 ";  #stringNum+", [0 "+currentFingerPos+" 0";
-
-            # get each event in the specific string
-            # event[0] = strings[i][j][0] = the time
-            # event[1] = strings[i][j][1] = the fret
-            for j, event in enumerate(string):
-                t = event[0] * timePerUnit;
-                # NOTE - ADDING 1 TO ALL FRETS TO AVOID OPEN STRINGS!!!
-                pos = self.getFretPos(event[1] + 1)
-                #if (pos < 0) { pos = 0; }
-
-                # if the event time is bigger than all others, then make that the new maxT
-                if (t > maxT): maxT = t;
-
-                #if (stringNum==2) { console.log("string: "+stringNum+"  pos: "+pos+"  prev: "+pos_prev+"  time: "+t+"  j: "+j+"  len: "+strings[i].length)}
-                #console.log("string: "+stringNum+"  pos: "+pos+"  prev: "+pos_prev+"  time: "+t+"  j: "+j+"  len: "+strings[i].length);
-
-                if (j==0):
-                    #current_finger += stringNum+", [0 "+pos+" 0";
-                    current_finger += str( max(t-0.001, 0.0) )+" "+str(pos)+" 0 ";
-                    current_finger += "; "+str( max(t,0.0) )+" "+str(pos)+" "+str(fingerForce)+" ";
-
-                else:
-                    if (pos == prev_pos):
-                        # repeated note - jiggle it around on the fret???
-                        # ?
-                        # OR just try an actual pluck:
-                        self.plucks.append( [stringNum, t, pluckPos, pluckDur, pluckF*0.75 + r.random()*0.5*pluckF] )
-
-                    else:
-                        current_finger += "; "+str((t-glideTime))+" "+str(prev_pos)+" "+str(fingerForce)+" ";
-                        current_finger += "; "+str(t)+" "+str(pos)+" "+str(fingerForce)+" ";
-                        if (alwaysPluck):
-                            self.plucks.append( [stringNum, t, pluckPos, pluckDur, pluckF*0.75 + r.random()*0.5*pluckF] )
-
-                prev_pos = pos;       
-
-            #current_finger += "], ["+str(fingerHeight)+", 0];\n";
-            finger_defs.append(current_finger);
-            #console.log(fingers_in_this_string.length);
-
-        returnArray = [finger_defs, maxT];
-        return returnArray;
-
-
-    def getFretPos(self, fretNum):
-    	fretPos = self.fretPositions[fretNum]
-    	fretSize = fretPos - self.fretPositions[max(0, fretNum-1)]
-    	fingerPos = fretPos - (1-self.fretFingerPos)*fretSize
-    	if fingerPos < 0: fingerPos = 0
-    	return fingerPos
-
-    def isNum(self, testChar):
-        result = False;
-        if (testChar >= '0' and testChar <= '9'):
-            result = True;
-        return result;
-
-
     def walk(self, inVal, maxVal):
         newVal = inVal
         if (r.random() < 0.75):
@@ -1668,131 +841,6 @@ class GuitarScore(object):
         if newVal < 0: newVal = 1
         if newVal > maxVal: newVal = maxVal-1
         return newVal
-
-
-    def midiToScore(self, midiFile, stringCount=6, rate=1.0, transpose=0, alwaysPluck=True):
-        """Convert a txt file of guitar tab to a NESS score file
-
-        Tab should be in lines in the following format:
-        |--1-3-----... etc ...----7--3---|
-
-        the 'rate' parameter specifies the time per unit, where 1 is 1/8 of a second per unit, 2 is 1/16 of a second per unit, etc
-        if higherFrets is set to "False", then "12" would mean fret 1 then fret 2, rather than fret 12
-
-        # TO DO: read tempo and use that to scale the rate
-        """
-        pattern = midi.read_midifile(midiFile)
-
-        # TO DO: read tempo and use that to scale the rate
-
-        # PARAMS FOR CONVERSION
-        ticks_to_seconds_ratio = 0.0007/float(rate) # 2000 ticks = one second?
-        # (60000 / (bpm * ppq)
-        pattern.make_ticks_abs()
-
-        events, timings = getEventsAndTimings(pattern)
-        scoreVariables = self.createScoreEventsFromMIDIEvents(events, timings, transpose, ticks_to_seconds_ratio, alwaysPluck)
-        self.fingerStrings = scoreVariables[0];
-        self.T = int(scoreVariables[1]+5);
-        print ("score infomation read from "+midiFile);
-
-
-    def createScoreEventsFromMIDIEvents(self, events, timings, transpose, ticks_to_seconds_ratio, alwaysPluck):
-        startingFrets = [40, 45, 50, 55, 59, 64];
-        glideTime = 0.005
-        tOffset = 0.5
-        #fingerForce = 1
-        pluckForce = 0.18
-        pluckForceJitter = 0.02
-        prevString = 0
-        prevFret = [-1 for i in range(6)]
-        pluck_defs = []
-        maxT = 1
-        self.fingerHeight = 0.0;
-
-
-
-        finger_defs = ["" for i in range(6)]
-        for i, event in enumerate(events):
-            if isinstance(event, midi.NoteOnEvent):
-                if (event.channel < 17):
-                    #tickScale = 1 - 0.5*(i/float(len(events)))
-                    tickScale = 1
-                    pitch = event.data[0] + transpose
-                    vel = event.data[1]
-                    fingerForce = vel*0.02
-                    print(fingerForce)
-                    if (fingerForce < 0.5): fingerForce = 0.5
-                    string, fret = midiToStringFret(pitch)
-                    t = (event.tick * ticks_to_seconds_ratio * tickScale) + tOffset;
-                    stringPos = self.getFretPos(fret)
-                    #stringPos = fretToPos(fret, self.fretPositions, self.distanceBehindFret)
-
-                    if (prevFret[string] == -1):           
-                        # if this string hasn't been used yet
-                        #finger_defs[string] += str(t-(glideTime))+" "+str(stringPos)+" 0"
-                        finger_defs[string] += str(0)+" "+str(0.001)+" "+str(fingerForce*0.125)
-                        finger_defs[string] += "; "+str(t)+" "+str(stringPos)+" "+str(fingerForce) 
-
-                    elif (fret == prevFret[string]):      
-                        # if the last used fret on this string was the same as this one
-                        # add a pluck
-                        self.plucks.append( [string+1, t, round(0.85 + ((r.random()*2-1)*0.06), 3), r.random()*0.0005 + 0.0002, pluckForce + (r.random()*2 - 1)*pluckForceJitter] )
-                    else:
-                        # move the appropriate finger
-                        if alwaysPluck:
-                            self.plucks.append( [string+1, t+0.002, round(0.85 + ((r.random()*2-1)*0.06), 3), r.random()*0.0005 + 0.0002, pluckForce + (r.random()*2 - 1)*pluckForceJitter] )
-                        #prevStringPos = fretToPos(prevFret[string], self.fretPositions, self.distanceBehindFret)
-                        prevStringPos = self.getFretPos(prevFret[string])
-                        finger_defs[string] += "; "+str(t-(glideTime))+" "+str(prevStringPos)+" "+str(fingerForce) 
-                        finger_defs[string] += "; "+str(t)+" "+str(stringPos)+" "+str(fingerForce)
-
-                    prevString = string;   
-                    prevFret[string] = fret;
-                    maxT = t
-
-        maxT = round(maxT+5)
-        return (finger_defs, maxT)
-
-
-def getEventsAndTimings(pattern):
-    tempEvents = []
-    tempTimings = []
-    for track in pattern:
-            for event in track:
-                tempEvents.append(event)
-    sortedEvents = sorted(tempEvents, key=lambda x: x.tick)
-    for e in sortedEvents:
-        tempTimings.append(e.tick)
-    return sortedEvents, tempTimings
-
-
-def midiToStringFret(note):
-    string_and_fret = [0, 0]
-    while (note < startingFrets[0]):
-        note += 12
-    while (note > startingFrets[5]+19):
-        note -= 12
-    if (note < startingFrets[1]):
-        string_and_fret = [0, note-startingFrets[0]]
-    elif (note < startingFrets[2]):
-        string_and_fret = [1, note-startingFrets[1]]
-    elif (note < startingFrets[3]):
-        string_and_fret = [2, note-startingFrets[2]]
-    elif (note < startingFrets[4]):
-        string_and_fret = [3, note-startingFrets[3]]
-    elif (note < startingFrets[5]):
-        string_and_fret = [4, note-startingFrets[4]]
-    else:
-        string_and_fret = [5, note-startingFrets[5]]
-    return string_and_fret[0], string_and_fret[1]
-
-
-def fretToPos(fret, fretPositions, distanceBehindFret):
-    pos = fretPositions[fret] - distanceBehindFret
-    if pos < 0:
-        pos = 0
-    return pos
 
 
 def fingerPicking(stringCount, startTime, repetitions, rate=0.25, swing=0, ratewarp=False, pForceMax=0.1):
@@ -1889,10 +937,6 @@ def fingerPicking(stringCount, startTime, repetitions, rate=0.25, swing=0, ratew
     # [str_num, pluck_time, pluck_pos, pluck_dur, pluck_force]
     return newPlucks
 
-
-def mtof(midinote):
-    return 440 * pow(2, (midinote-69)/12.0)
-
 class MIDIStrings(object):
     def __init__(self, stringCount, tempo=120, name="MIDI Strings"):
         self.stringCount = stringCount
@@ -1912,8 +956,3 @@ class MIDIStrings(object):
         binfile = open(fName, 'wb')
         self.midiData.writeFile(binfile)
         binfile.close()
-
-
-
-
-
