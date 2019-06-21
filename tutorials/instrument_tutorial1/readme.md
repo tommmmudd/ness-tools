@@ -10,7 +10,7 @@ This tutorial looks at:
 
 The code for this tutorial can be found in the [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
-[<-- Previous Tutorial (2)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)  / / /  [Next Tutorial (4) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
 
 ## Creating a StringInstrument object
 First, we will import the nesstools guitar module.
@@ -77,3 +77,5 @@ my_score.write("ness_files_to_process/inst_1_score.m")
 
 The full code for this tutorial is here: [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py).
 Run the python file to create your score and instrument files. Then upload them to the [NESS user interface](https://ness-frontend.eca.ed.ac.uk/)
+
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
