@@ -4,9 +4,10 @@ This library presents some Python classes for building score and instrument file
 
 Below are a some tutorials that give you an idea of how to use these tools for engaging with the Ness models.
 
-0. How to use the Ness system
 
-NESS Guitar tutorials:
+# Tutorials
+
+## NESS Guitar score tutorials:
 1. [Score basics: pluck a couple of a strings](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)
 2. [Plucking with more control](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)
 3. [Putting fingers on frets with playFret()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
@@ -18,16 +19,21 @@ NESS Guitar tutorials:
 9. NESS Recipe #1: a simple plucking piece
 10. NESS Recipe #2: a fretless just intonation tuning piece
 
-- These examples show you how to generate score and instrument files for the NESS physical models, using the nesstools Python module
-- To run the script, open a terminal, locate the script and type "python gtr_example1.py"
-- This will create a score file and an instrument file in the "ness_files_to_process" folder
-- Upload these files to https://ness-frontend.eca.ed.ac.uk/ to create audio files
+## NESS Guitar instrument tutorials:
+1. coming soon...
+
+# How to run these files
+- clone this repository
+- Open a terminal and cd to the folder.
+- type "python gtr_score_1_basic_plucks.py" (or whichever file you wish to run)
+- This should create both a score file and an instrument file in the "ness_files_to_process" folder
+- Upload these files to the [NESS User Interface](https://ness-frontend.eca.ed.ac.uk/) to create audio files
 - You will need to register for an account:
 - 1) Register for an EASE Friend account with the University of Edinburgh: https://www.ease.ed.ac.uk/friend/
-- 2) Then email the NESS team synthesis@epcc.ed.ac.uk, including your EASE username (usually your email address) in the email.  You will then be added to the user access list for the NESS web UI
+- 2) Then email the NESS team synthesis@epcc.ed.ac.uk, including your EASE username (usually your email address) in the email.  You will then be added to the user access list for the NESS web UI.
 
 
-Example implementation
+# Example implementation
 
 ```python
 from nesstools import guitar
