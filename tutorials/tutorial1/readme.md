@@ -2,9 +2,9 @@
 
 This tutorial looks at:
 
-1) how to set score and instrument objects
-2) how to add basic pluck instructions to the score
-3) how to write the score and instrument objects to NESS-compatible files (.m)
+1. how to set score and instrument objects
+2. how to add basic pluck instructions to the score
+3. how to write the score and instrument objects to NESS-compatible files (.m)
 
 The code for this tutorial can be found in the [gtr_score_1_basic_plucks.py](https://github.com/tommmmudd/ness-tools/blob/master/gtr_score_1_basic_plucks.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
