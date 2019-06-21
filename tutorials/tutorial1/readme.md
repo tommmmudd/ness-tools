@@ -1,4 +1,5 @@
-# NESS-tools Tutorial 1
+# NESS Guitar Tutorial 1
+Plucking strings
 
 This tutorial looks at:
 
@@ -62,4 +63,4 @@ my_guitar.write("ness_files_to_process/example1_basic_guitar.m")
 This writes the instrument file to a .m file for use with the ness system, as described on the [main page](https://tommmmudd.github.io/ness-tools/).
 
 That should be all you need to create a very simple audio file through the NESS System.
-[<-- Back to index](https://tommmmudd.github.io/ness-tools/)  [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)
+[Back to index](https://tommmmudd.github.io/ness-tools/)  [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)
