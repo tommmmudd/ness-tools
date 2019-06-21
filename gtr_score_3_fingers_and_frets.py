@@ -1,9 +1,9 @@
 from nesstools import guitar
 
 # *************************************
-# Working with raw finger positions
-# GuitarScore.playPosition() function
-# (1) specify string num, time, and position
+# Working with fingers and frets
+# GuitarScore.playFret() function
+# (1) specify string num, time, and fret number
 # (2) additionally specify the glide time and finger force
 # *************************************
 

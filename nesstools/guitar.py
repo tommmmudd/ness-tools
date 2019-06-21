@@ -431,7 +431,7 @@ class GuitarScore(object):
             strings = [strings]  # make it into a list, and 
         for s in strings:
             s = s-1
-            actualPos = getFretPos(self.capo+fret)
+            actualPos = self.getFretPos(self.capo+fret)
             self.frets[s] = str( actualPos )
             if self.prevFrets[s] == "":
                 self.prevFrets[s] = self.frets[s]
@@ -474,9 +474,12 @@ class GuitarScore(object):
             self.prevFrets[s] = self.frets[s]
         #self.plucks.append( self.makePluck(s+1, t+0.01, pluckF) )
 
-    def pluck(self, s, t, pos=0.8, dur=0.001, f=0.3):
+    def pluck(self, strings, t, pos=0.8, dur=0.001, f=0.3):
         """Add a pluck to the scorefile parameter 'plucks'"""
-        self.plucks.append( [ s, t, pos, dur, f] )
+        if not isinstance(strings, list):
+            strings = [strings]  # make it into a list, and 
+        for s in strings:
+            self.plucks.append( [ s, t, pos, dur, f] )
 
     def midiToStringFret(self, note):
         string_and_fret = [0, 0]
