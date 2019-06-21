@@ -6,7 +6,7 @@ This tutorial explores some of the other existing instrument templates
 
 The code for this tutorial can be found in the [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
-[<-- Previous Tutorial (2)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)  / / /  [Next Tutorial (4) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)
+[<-- Previous Tutorial (1)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)  / / /  [Next Tutorial (3) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
 
 ## Setting up
 In this tutorial, we'll introduce some of the built-in guitar examples. First, as ever, we import the module
