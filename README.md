@@ -1,6 +1,22 @@
 # NESS Python library
 
-Python classes for building score and instrument files for the [NESS physical models](http://ness.music.ed.ac.uk).
+This library presents some Python classes for building score and instrument files for the [NESS physical models](http://ness.music.ed.ac.uk).
+
+Below are a some tutorials that give you an idea of how to use these tools for engaging with the Ness models.
+
+0. How to use the Ness system
+
+NESS Guitar tutorials:
+1. [Score basics: pluck a couple of a strings][https://tommmmudd.github.io/ness-tools/tutorial1]
+2. [Plucking with more control][https://tommmmudd.github.io/ness-tools/tutorial2]
+3. [Putting fingers on frets with playFret()][https://tommmmudd.github.io/ness-tools/tutorial3]
+4. [Putting fingers in positions with playPosition()][https://tommmmudd.github.io/ness-tools/tutorial4]
+5. [Playing harmonics with playHarmonic()][https://tommmmudd.github.io/ness-tools/tutorial5]
+6. A more advanced look at harmonics
+7. Creating structures with iteration #1
+8. Creating structures with iteration #1
+9. NESS Recipe #1: a simple plucking piece
+10. NESS Recipe #2: a fretless just intonation tuning piece
 
 - These examples show you how to generate score and instrument files for the NESS physical models, using the nesstools Python module
 - To run the script, open a terminal, locate the script and type "python gtr_example1.py"
