@@ -28,7 +28,7 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 6. (more coming soon)
 
 # How to run these files
-- clone this repository
+- Clone or download this repository
 - Open a terminal and cd to the folder.
 - type "python gtr_score_1_basic_plucks.py" (or whichever file you wish to run)
 - This should create both a score file and an instrument file in the "ness_files_to_process" folder
