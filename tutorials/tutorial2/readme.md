@@ -5,7 +5,7 @@ This tutorial looks at how to specify additional parameters to the pluck() funct
 
 The code for this tutorial can be found in the [gtr_score_2_more_plucks.py](https://github.com/tommmmudd/ness-tools/blob/master/gtr_score_2_more_plucks.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
-[<-- Previous Tutorial](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)  [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
+[<-- Previous Tutorial](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)  | |  [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
 
 ## Setting up
 As in the last tutorial, we will import the nesstools module, create two global variables, and create our GuitarScore object:
@@ -73,4 +73,5 @@ In the next tutorial (3), we will look at adding fingers to the strings at parti
 
 
 [Back to index](https://tommmmudd.github.io/ness-tools/) 
-[<-- Previous Tutorial (1)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)  [Next Tutorial (3) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
+
+[<-- Previous Tutorial (1)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)  | |  [Next Tutorial (3) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
