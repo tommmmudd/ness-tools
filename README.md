@@ -13,14 +13,16 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 3. [Putting fingers on frets with playFret()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
 4. [Putting fingers in positions with playPosition()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)
 5. [Playing harmonics with playHarmonic()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial5)
-6. A more advanced look at harmonics
-7. Creating structures with iteration #1
-8. Creating structures with iteration #1
-9. NESS Recipe #1: a simple plucking piece
-10. NESS Recipe #2: a fretless just intonation tuning piece
+6. (coming soon) A more advanced look at harmonics
+7. (coming soon) Creating structures with iteration #1
+8. (coming soon) Creating structures with iteration #1
+9. (coming soon) NESS Recipe #1: a simple plucking piece
+10. (coming soon) NESS Recipe #2: a fretless just intonation tuning piece
 
 ## NESS Guitar instrument tutorials:
-1. coming soon...
+1. [Instrument basics: defaultGuitar](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)
+2. [Instrument basics: more tempaltes](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
+3. (coming soon)...
 
 # How to run these files
 - clone this repository
@@ -38,15 +40,16 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 ```python
 from nesstools import guitar
 
-stingCount = 6
-my_guitar = guitar.StringInstrument(stingCount)
+stringCount = 6
+my_guitar = guitar.StringInstrument(stringCount)
 my_guitar.defaultGuitar()
 my_guitar.write("basic_guitar.m")
 
-my_score = guitar.GuitarScore(60, 2)       
-pluckTime = 1
-pluckString = 1
-my_score.plucks.append( [pluckString, pluckTime, 0.8, 0.0001, 1] )
+my_score = guitar.GuitarScore(10, stringCount)       
+my_score.pluck( 1, 0.5 )
+my_score.playFret( 1, 1.0, 5 )
+my_score.playFret( 1, 1.5, 7 )
+my_score.pluck( 1, 2 )
 my_score.write("basic_score.m")
 ```
 
