@@ -58,7 +58,7 @@ The [score tutorials](https://tommmmudd.github.io/ness-tools/)  document and exp
 # in order to test our instrument file, we create a quick score file that will play all the strings from 1 to [stringCount]
 T = 9                      # how long should the piece be (in seconds)?
 
-# Create a score object, specifying the total duration (T) and the string count (numberOfStrings)
+# Create a score object, specifying the total duration (T) and the string count (stringCount)
 my_score = guitar.GuitarScore(T, stringCount)       
 
 # create a variable that represents the indexes of all strings
