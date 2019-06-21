@@ -8,6 +8,8 @@ This tutorial looks at:
 
 The code for this tutorial can be found in the [gtr_score_1_basic_plucks.py](https://github.com/tommmmudd/ness-tools/blob/master/gtr_score_1_basic_plucks.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/)  [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)
+
 ## First things first
 The first step in working with the NESS tools is to import then into the Python script as shown below.
 
