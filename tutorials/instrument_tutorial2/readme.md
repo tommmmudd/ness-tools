@@ -4,7 +4,7 @@ Working with existing instrument templates
 
 This tutorial explores some of the other existing instrument templates
 
-The code for this tutorial can be found in the [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
+The code for this tutorial can be found in the [gtr_instrument_2_templates.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_2_templates.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (1)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)  / / /  [Next Tutorial (3) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
 
@@ -67,7 +67,7 @@ my_score.pluck(allStrings, 	4)		# pluck all six strings at time 0.2 at fret 0
 my_score.write("ness_files_to_process/inst_1_score.m")
 ```
 
-The full code for this tutorial is here: [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py).
+The full code for this tutorial is here: [gtr_instrument_2_templates.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_2_templates.py).
 Run the python file to create your score and instrument files. Then upload them to the [NESS user interface](https://ness-frontend.eca.ed.ac.uk/)
 
 
