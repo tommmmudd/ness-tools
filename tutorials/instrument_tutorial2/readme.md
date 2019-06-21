@@ -70,5 +70,5 @@ my_score.write("ness_files_to_process/inst_1_score.m")
 The full code for this tutorial is here: [gtr_instrument_2_templates.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_2_templates.py).
 Run the python file to create your score and instrument files. Then upload them to the [NESS user interface](https://ness-frontend.eca.ed.ac.uk/)
 
-
+[<-- Previous Tutorial (1)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)  / / /  [Next Tutorial (3) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
 
