@@ -95,7 +95,6 @@ class StringInstrument(object):
         self.backboard = True
         self.fingers = True
         self.frets = True
-        
 
         self.fretHeight = -0.001
         self.backboardParams = [-0.002, -0.000, -0.0002]    #ALL NEGATIVE OR ZERO parabola: b(x) = b0+b1*x+b2*x^2, where backboard =% [b0 b1 b2]]
@@ -405,6 +404,14 @@ class GuitarScore(object):
         timingPattern = [1, 0.5, 1, 0.5, 1, 0.5, 0.25, 0.25]
         self.timingPatterns.append( timingPattern )
 
+    def getFretPos(self, fretNum):
+        fretPos = self.fretPositions[fretNum]
+        fretSize = fretPos - self.fretPositions[max(0, fretNum-1)]
+        fingerPos = fretPos - (1-self.fretFingerPos)*fretSize
+        if fingerPos < 0: fingerPos = 0
+        #fingerPos = max(0, self.fretPositions[fretNum] - self.distanceBehindFret)
+        return fingerPos
+
     def playNote(self, startTime=0, note=60, pluckF=0.05, glideTime=0.001):
         t = startTime
         onF = "10"
@@ -424,7 +431,8 @@ class GuitarScore(object):
             strings = [strings]  # make it into a list, and 
         for s in strings:
             s = s-1
-            self.frets[s] = str( max(self.fretPositions[fret] - self.distanceBehindFret, 0) )
+            actualPos = getFretPos(self.capo+fret)
+            self.frets[s] = str( actualPos )
             if self.prevFrets[s] == "":
                 self.prevFrets[s] = self.frets[s]
             self.fingerStrings[s] += str(t-glideTime)+" "+self.prevFrets[s]+" "+onF+"; "
