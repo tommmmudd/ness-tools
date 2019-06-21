@@ -1,7 +1,7 @@
 # NESS Guitar Tutorial 2
 Plucking with more control
 
-This tutorial looks at how to specify additional parameters to the pluck() function
+This tutorial looks at how to specify additional parameters to the `pluck()` function
 
 The code for this tutorial can be found in the [gtr_score_2_more_plucks.py](https://github.com/tommmmudd/ness-tools/blob/master/gtr_score_2_more_plucks.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
@@ -25,7 +25,7 @@ my_score.pluck( 1, 1 )
 ```
 
 ## Advanced plucking
-The pluck() function can take additional arguments to specify other parameters beyond string number and time. The full range of arguments is as follows:
+The `pluck()` function can take additional arguments to specify other parameters beyond string number and time. The full range of arguments is as follows:
 
 1. string number (1, 2, 3 ...)
 2. time (in seconds)
@@ -71,6 +71,7 @@ my_guitar.write("ness_files_to_process/example2_basic_guitar.m")
 
 In the next tutorial (3), we will look at adding fingers to the strings at particular frets.
 
+____
 
 [Back to index](https://tommmmudd.github.io/ness-tools/) 
 
