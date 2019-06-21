@@ -69,6 +69,7 @@ my_guitar.write("ness_files_to_process/gtr_instrument_3.m")
 
 In the next tutorial (4), we will look at specifying absolute position on the fretboard rather than a fret number.
 
+___
 <a name="myfootnote1">[1]</a> *Note that a very gentle pluck is added by the nesstools module if no pluck is found, otherwise the NESS UI will not allow the file to be processed!*
 
 [Back to index](https://tommmmudd.github.io/ness-tools/) 
