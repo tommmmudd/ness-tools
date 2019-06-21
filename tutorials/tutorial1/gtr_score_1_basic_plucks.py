@@ -13,11 +13,12 @@ from nesstools import guitar
 
 
 # *************************************
-# Working with plucks
-# GuitarScore.pluck() function
+# Setting up a score, instrument, and plucking
+# GuitarScore object, StringInstrument object and GuitarScore.pluck() function
 # (1) setup global parameters for string count and total score time
-# (2) specify string num, time, and position
-# (2) write the score to a file
+# (2) create an instance of the score object GuitarScore
+# (3) specify string num, time, and position
+# (4) write the score to a file
 # *************************************
 
 # (1) Global Parameters
@@ -28,7 +29,7 @@ T = 8					# total time
 #________________________________________
 #_____CREATE THE SCORE FILE_________
 
-# Create a score object, specifying the total duration (8 seconds here) and the string count (using the variable defined above)
+# (2) Create a score object, specifying the total duration (8 seconds here) and the string count (using the variable defined above)
 my_score = guitar.GuitarScore(T, stringCount)
 
 
