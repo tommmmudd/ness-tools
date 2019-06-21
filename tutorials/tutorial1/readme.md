@@ -37,10 +37,10 @@ Let's pluck each of our two strings.
 my_score.pluck( 1, 0.5 )  # pluck string 1 (thickest string by default), at 0.5 seconds
 my_score.pluck( 2, 1.0 )  # pluck string 2 at 1.5 seconds
 ```
-We called our GuitarScore object "my_score", so we can use the pluck() function by calling "my_score.pluck( string_num, time )" as shown above.
+We called our GuitarScore object `my_score`, so we can use the `pluck()` function by calling `my_score.pluck( string_num, time )` as shown above.
 
 ### Writing our score file for the NESS system
-We now have a complete (if simple) score. We can output this as a NESS-compatible score file by using "my_score.write()" and specifying a file name inside the brackets.
+We now have a complete (if simple) score. We can output this as a NESS-compatible score file by using `my_score.write()` and specifying a file name inside the brackets.
 ```python
 my_score.write("ness_files_to_process/example1_basic_score.m")
 ```
@@ -51,17 +51,19 @@ Defining an instrument is a similar process:
 ```python
 my_guitar = guitar.StringInstrument(stringCount)
 ```
-We call our StringInstrument object "my_guitar" and tell it how many strings it has using the "stringCount" variable (2). For this tutorial, we will just use the default guitar instrument (a steel string-like instrument). Since we have two strings, this will default to the low E string and A string.
+We call our StringInstrument object `my_guitar` and tell it how many strings it has using the `stringCount` variable (2). For this tutorial, we will just use the default guitar instrument (a steel string-like instrument). Since we have two strings, this will default to the low E string and A string.
 ```python
 my_guitar.defaultGuitar()   # set the strings to those of the default guitar prototype
 ```
 ### Writing our instrument file for the NESS system
-As with the score, the instrument can be written with the "write()" function:
+As with the score, the instrument can be written with the `write()` function:
 ```python
 my_guitar.write("ness_files_to_process/example1_basic_guitar.m")
 ```
 This writes the instrument file to a .m file for use with the ness system, as described on the [main page](https://tommmmudd.github.io/ness-tools/).
 
 That should be all you need to create a very simple audio file through the NESS System.
+
+____
 
 [Back to index](https://tommmmudd.github.io/ness-tools/)  / / / [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)
