@@ -62,6 +62,29 @@ my_guitar.tuneString(6, 64.5)     # half way between E4 (64) and F4 (65)
 
 Note that the approach to tuning described here may go awry with more unusal score and instrument parameters. All part of the fun.
 
+## A Quick test score
+This score adds a pluck every 0.15 seconds, iterating through the strings. It is a useful tester. It reuses the stringCout variable, so we need to make sure that that has been set properly above.
+
+```python
+# in order to test our instrument file, we create a quick score file that will play all the strings from 1 to [stringCount]
+T = 9    # total time
+my_score = guitar.GuitarScore(T, stringCount)       
+
+# here we create a plucking sequence where each string is plucked in turn, until we are 4 seconds from the end of the score
+# the pluck rate is the gap between plucks (in seconds)
+pluckRate = 0.15
+t = 0.1
+i=0
+while t < (T-4):
+	s = i%stringCount
+	my_score.pluck(s+1, t)
+	i += 1
+	t += pluckRate
+
+# explort the score as a NESS-compatible score file
+my_score.write("ness_files_to_process/inst_4_score.m")
+```
+
 The full code for this tutorial is here: [gtr_instrument_3_tuning.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_3_tuning.py).
 
 [<-- Previous Tutorial (2)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)  / / /  [Next Tutorial (4) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial4)
