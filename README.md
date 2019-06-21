@@ -22,7 +22,10 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 ## NESS Guitar instrument tutorials:
 1. [Instrument basics: defaultGuitar](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)
 2. [Instrument basics: more tempaltes](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
-3. (coming soon)...
+3. [Tuning / Microtones](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
+4. [Customising string parameters #1](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial4)
+5. [Customising string parameters #2](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial5)
+6. (more coming soon)
 
 # How to run these files
 - clone this repository
