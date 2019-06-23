@@ -3,6 +3,8 @@ Custom tunings
 
 This tutorial shows how to manually tune strings using the `tuneString()` function. This allows a given string to be set to a particular note - by adjusting it's tension parameter.
 
+Audio example of this code: [inst_tut_3.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/inst_tut_3.mp3)
+
 The code for this tutorial can be found in the [gtr_instrument_3_tuning.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_3_tuning.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (2)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)  / / /  [Next Tutorial (4) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial4)
