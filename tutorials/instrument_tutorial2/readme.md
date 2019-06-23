@@ -4,6 +4,8 @@ Working with existing instrument templates
 
 This tutorial explores some of the other existing instrument templates
 
+Audio example of this code: [inst_tut_2.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/inst_tut_2.mp3)
+
 The code for this tutorial can be found in the [gtr_instrument_2_templates.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_2_templates.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (1)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)  / / /  [Next Tutorial (3) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
