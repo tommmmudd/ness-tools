@@ -7,6 +7,8 @@ This tutorial looks at:
 1. adding finger events to the score with the `playFret()` function.
 2. finger slides and finger force as extra parameters
 
+Audio example of this code: [score_tut_3.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_3.mp3)
+
 The code for this tutorial can be found in the [gtr_score_3_fingers_and_frets.py](https://github.com/tommmmudd/ness-tools/gtr_score_3_fingers_and_frets.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (2)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)  / / /  [Next Tutorial (4) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)
