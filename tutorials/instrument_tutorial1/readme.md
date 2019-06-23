@@ -8,6 +8,8 @@ This tutorial looks at:
 2. creating an instrument with n strings
 3. writing the file
 
+Audio example of this code: [inst_tut_1.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/inst_tut_1.mp3)
+
 The code for this tutorial can be found in the [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
