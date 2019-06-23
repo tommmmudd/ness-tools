@@ -7,7 +7,7 @@ This tutorial looks at:
 2. how to add basic pluck instructions to the score
 3. how to write the score and instrument objects to NESS-compatible files (.m)
 
-Audio example of this code: [score_tut_1](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_1.mp3)
+Audio example of this code: [score_tut_1.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_1.mp3)
 
 The code for this tutorial can be found in the [gtr_score_1_basic_plucks.py](https://github.com/tommmmudd/ness-tools/blob/master/gtr_score_1_basic_plucks.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
