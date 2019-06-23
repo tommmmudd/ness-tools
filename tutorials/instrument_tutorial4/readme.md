@@ -3,6 +3,8 @@ String parameters #1
 
 In this tutorial, we will delve into the detail of how NESS strings are defined, altering parameters one-by-one to specific values.
 
+Audio example of this code: [inst_tut_4.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/inst_tut_4.mp3)
+
 The code for this tutorial can be found in the [gtr_instrument_4_params_1.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_4_params_1.py.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (3)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)  / / /  [Next Tutorial (5) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial5)
