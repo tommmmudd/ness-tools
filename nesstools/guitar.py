@@ -8,28 +8,28 @@ import midi
 
 # BRASS
 
-'''
+
 #SCALE CREATOR
 modes = [["major", "ionian"], ["dorian"], ["phygian"], ["lydian"], ["mixolydian"], ["minor", "aeolian"], ["locrian"]]
 keys = { # ensure a conversion to lowercase first
-        "e" : 0,
-        "f" : 1,
-        "f#" : 2,
-        "g" : 3,
-        "g#" : 4,
-        "a" : 5,
-        "a#" : 6,
-        "b" : 7,
-        "c" : 8,
-        "c#" : 9,
-        "d" : 10,
-        "d#" : 11,
-        "gb" : 2,
-        "ab" : 4,
-        "bb" : 6,
-        "db" : 9,
-        "eb" : 11
-}'''
+        "c" : 0,
+        "c#" : 1,
+        "d" : 2,
+        "d#" : 3,
+        "e" : 4,
+        "f" : 5,
+        "f#" : 6,
+        "g" : 7,
+        "g#" : 8,
+        "a" : 9,
+        "a#" : 10,
+        "b" : 11,
+        "db" : 1,
+        "eb" : 3,
+        "gb" : 6,
+        "ab" : 8,
+        "bb" : 10
+}
 
 # Major
 stringFretsEThick = [0, 2, 4, 5, 7, 9, 10, 12, 14, 16, 17, 19]
@@ -72,7 +72,7 @@ class StringInstrument(object):
         stringCount Number of strings on the instrument (integer)
         strings     a list of NessString objects, of length stringCount.
     """
-    def __init__(self, stringCount, name="Quick Guitar Instrument"):
+    def __init__(self, stringCount=6, name="Quick Guitar Instrument"):
         self.name = name
         self.sr = 44100
         self.stringCount = stringCount
@@ -108,6 +108,31 @@ class StringInstrument(object):
         """Quick function to setup the strings for a basic 6 string steel guitar"""
         for i in range(self.stringCount):
             self.setRegularString(i, i)
+
+    def dadgadGuitar(self):
+        self.stringCount = 6
+        self.strings = []
+        self.strings.append( NessString(0.68, 2e11, 9.5, 0.0002, 7850, 15, 5) )
+        self.strings.append( NessString(0.68, 2e11, 12.3, 0.00015, 7850, 15, 5) )
+        self.strings.append( NessString(0.68, 2e11, 21.9, 0.00015, 7850, 15, 5) )
+        self.strings.append( NessString(0.68, 2e11, 39.2, 0.00015, 7850, 15, 7) )
+        self.strings.append( NessString(0.68, 2e11, 22.6, 0.0001, 7850, 15, 5) )
+        self.strings.append( NessString(0.68, 2e11, 39.2, 0.0001, 7850, 15, 8) )
+
+    def randomGuitar(self):
+        for string in self.strings:
+            string.length = r.random()*1 + 0.5
+            string.radius = r.random()*r.random()*0.001 + 0.0007
+            string.tension = r.random()*20 + 15.0 / (string.radius * 10000)
+            string.lowDecay = r.randint(9, 30)
+            string.highDecay = r.randint(3, string.lowDecay-1)
+
+    def brightGuitar(self):
+        self.stringCount = 6
+        self.defaultGuitar();
+        for string in self.strings:
+            string.lowDecay = 28
+            string.highDecay = 14
 
     def defaultBass(self, kind="regular"):
         """Setup the strings for a basic 4 string bass guitar"""
@@ -249,10 +274,14 @@ class StringInstrument(object):
 
     def tuneString(self, s, note):
         #starting_frets = [40, 45, 50, 55, 59, 64]
-        string = self.strings[s]
-        newTension = pow(string.length * 2 * mtof(note), 2) * string.density * 3.141593 * string.radius*string.radius
+        midiNote = 40
+        if isinstance(note, str):
+            midiNote = getMidiPitchFromString(note, s-1)
+        elif (isinstance(note, int) or isinstance(note, float)):
+            midiNote = note
+        newTension = pow(self.strings[s-1].length * 2 * mtof(midiNote), 2) * self.strings[s-1].density * 3.141593 * self.strings[s-1].radius*self.strings[s-1].radius
         #print(newTension)
-        self.strings[s].tension = newTension
+        self.strings[s-1].tension = newTension
         
 
     def detune(self, detuneAmount):
@@ -2000,6 +2029,27 @@ def mtof(midinote):
 def harmonicForceFromPosition(pos, force):
     # half the force is scaled - the closer we are to the nut, the higher the force?
     return force*0.5 + force*0.5*(0.5 - abs(pos-0.5))
+
+def getMidiPitchFromString(noteString, s=0):
+    noteName = "E"
+    register = 3
+    #stringNoteDefaults = [40, 45, 50, 55, 59, 64]
+    registerPerString = [2, 2, 3, 3, 3, 4]
+    # so "e", s=1 would give 
+    if len(noteString) == 1:
+        noteName = noteString[0].lower()
+        if s < 6:
+            register = registerPerString[s]
+        else:
+            register = 2
+    if len(noteString) == 2:
+        noteName = noteString[0].lower()
+        register = int(noteString[1])
+    elif len(noteString) == 3:
+        noteName = noteString[0:2].lower()
+        register = int(noteString[2])
+    midiVal = keys[noteName] + 12*(register+1)
+    return midiVal
 
 class MIDIStrings(object):
     def __init__(self, stringCount, tempo=120, name="MIDI Strings"):

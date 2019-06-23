@@ -38,14 +38,17 @@ my_score.pluck( 1, 1 )
 # create another pluck on a particular string at a particular time, with a given position, duration and force
 # here we set the parameters as variables and then use the variables inside the pluck command
 string = 2			# pluck the first string (lowest, rather than highest)
-time = 3			# pluck at 1 second in the score
+time = 2			# pluck at 1 second in the score
 
 # (2) optional extra parameters for position (default=0.8)
-pluckPosition = 0.8		# pluck 80% of the way from the nut to the bridge
+pluckPosition = 0.95		# pluck 80% of the way from the nut to the bridge
 pluckDuration = 0.0005	# pluck duration in seconds - the duration of the force on the string
 pluckForce = 0.05		# pluck force in Newtons
 
 my_score.pluck( string, time, pluckPosition, pluckDuration, pluckForce )
+
+my_score.pluck( string, 3, 0.8, pluckDuration, pluckForce )
+my_score.pluck( string, 4, 0.55, pluckDuration, pluckForce )
 
 # explort the score as a NESS-compatible score file
 my_score.write("ness_files_to_process/example2_basic_score.m")
