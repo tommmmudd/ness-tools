@@ -10,7 +10,7 @@ This tutorial looks at:
 
 The code for this tutorial can be found in the [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
-[<-- Previous Tutorial (2)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial2)  / / /  [Next Tutorial (4) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
 
 ## Creating a StringInstrument object
 First, we will import the nesstools guitar module.
@@ -58,7 +58,7 @@ The [score tutorials](https://tommmmudd.github.io/ness-tools/)  document and exp
 # in order to test our instrument file, we create a quick score file that will play all the strings from 1 to [stringCount]
 T = 9                      # how long should the piece be (in seconds)?
 
-# Create a score object, specifying the total duration (T) and the string count (numberOfStrings)
+# Create a score object, specifying the total duration (T) and the string count (stringCount)
 my_score = guitar.GuitarScore(T, stringCount)       
 
 # create a variable that represents the indexes of all strings
@@ -77,3 +77,5 @@ my_score.write("ness_files_to_process/inst_1_score.m")
 
 The full code for this tutorial is here: [gtr_instrument_1_basics.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_1_basics.py).
 Run the python file to create your score and instrument files. Then upload them to the [NESS user interface](https://ness-frontend.eca.ed.ac.uk/)
+
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial (2) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial2)
