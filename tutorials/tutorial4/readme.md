@@ -45,7 +45,20 @@ my_score.playPosition	(2, 	0.5,   	0.333)	  # finger at pos 0.333, at time 0.5 o
 The fingers in this case are exactly where the frets would be. Let's try something more interesting:
 
 ```python
-my_score.playPosition	(1, 	1, 			0.25,  	0.3,	5)			# finger at pos 0.25 on string 1, at time=1s, glide time of 0.3s, finger force of 5N
-my_score.playPosition	(2, 	1.5, 		0.251,	1.3, 	5)			# finger at pos 0.251 on string 2, at time=1.5s, glide time of 1.3s, finger force of 5N				
+my_score.playPosition	(1, 1, 0.25, 0.3, 5)   # finger at pos 0.25 on string 1, at time=1s, glide time of 0.3s, finger force of 5N
+my_score.playPosition	(2, 1.5, 0.251, 1.3, 5)   # finger at pos 0.251 on string 2, at time=1.5s, glide time of 1.3s, finger force of 5N				
 ```
 The finger placements are very close - the first is a pure majord third above the string root. The second is an equal tempered majord third above the string root. We can here the two beat against each other. Here we also make use of the additional glide time and finger force parameters, as we did in the last tutorial.
+
+You can listen to this example here: [score_tut_4.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_4.mp3)
+
+Now we just write the score file to try this out as usual
+```python
+my_score.write("ness_files_to_process/gtr_score_4.m")
+```
+
+The code for this tutorial can be found in the [gtr_score_4_fingers_and_frets.py](https://github.com/tommmmudd/ness-tools/gtr_score_4_fingers_and_frets.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
+
+[<-- Previous Tutorial (3)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)  / / /  [Next Tutorial (5) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial5)
+
+
