@@ -3,6 +3,8 @@ Plucking with more control
 
 This tutorial looks at how to specify additional parameters to the `pluck()` function
 
+Audio example of this code: [score_tut_2.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_2.mp3)
+
 The code for this tutorial can be found in the [gtr_score_2_more_plucks.py](https://github.com/tommmmudd/ness-tools/blob/master/gtr_score_2_more_plucks.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)  / / /  [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
