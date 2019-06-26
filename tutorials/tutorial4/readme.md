@@ -1,4 +1,4 @@
-# NESS Guitar Tutorial 4
+# NESS Guitar Score Tutorial 4
 This tutorial looks at adding finger events to the score with the `playPosition()` function.
 
 Audio example of this code: [score_tut_4.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_4.mp3)
