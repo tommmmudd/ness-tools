@@ -7,7 +7,7 @@ The code for this tutorial can be found in the [gtr_score_5_harmonics.py](https:
 
 [<-- Previous Tutorial (4)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)  / / /  [Next Tutorial (6) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial6)
 
-## Using `playHarmonic()`
+## Using playHarmonic()
 Here we create a 3 string guitar using the default string settings and tunings (EAD):
 ```python
 from nesstools import guitar
