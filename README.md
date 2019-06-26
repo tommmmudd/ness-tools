@@ -13,11 +13,14 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 3. [Putting fingers on frets with playFret()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)
 4. [Putting fingers in positions with playPosition()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial4)
 5. [Playing harmonics with playHarmonic()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial5)
-6. (coming soon) A more advanced look at harmonics
-7. (coming soon) Creating structures with iteration #1
-8. (coming soon) Creating structures with iteration #1
-9. (coming soon) NESS Recipe #1: a simple plucking piece
-10. (coming soon) NESS Recipe #2: a fretless just intonation tuning piece
+6. [A more advanced look at harmonics](https://tommmmudd.github.io/ness-tools/tutorials/tutorial6)
+7.  (coming soon) Creating scores with tab #1
+8.  (coming soon) Creating scores with tab #2
+9.  (coming soon) Creating scores from MIDI files
+10. (coming soon) Creating structures with iteration #1
+11. (coming soon) Creating structures with iteration #1
+12. (coming soon) NESS Recipe #1: a simple plucking piece
+13. (coming soon) NESS Recipe #2: a fretless just intonation tuning piece
 
 ## NESS Guitar instrument tutorials:
 1. [Instrument basics: defaultGuitar](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial1)

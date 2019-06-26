@@ -1,12 +1,9 @@
-# NESS Guitar Tutorial 4
-Putting fingers on frets with playPosition()
-
-
+# NESS Guitar Score Tutorial 4
 This tutorial looks at adding finger events to the score with the `playPosition()` function.
 
 Audio example of this code: [score_tut_4.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_4.mp3)
 
-The code for this tutorial can be found in the [gtr_score_4_fingers_and_frets.py](https://github.com/tommmmudd/ness-tools/gtr_score_4_fingers_and_frets.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
+The code for this tutorial can be found in the [gtr_score_4_playPosition.py](https://github.com/tommmmudd/ness-tools/gtr_score_4_playPosition.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (3)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)  / / /  [Next Tutorial (5) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial5)
 
@@ -57,7 +54,7 @@ Now we just write the score file to try this out as usual
 my_score.write("ness_files_to_process/gtr_score_4.m")
 ```
 
-The code for this tutorial can be found in the [gtr_score_4_fingers_and_frets.py](https://github.com/tommmmudd/ness-tools/gtr_score_4_fingers_and_frets.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
+The code for this tutorial can be found in the [gtr_score_4_playPosition.py](https://github.com/tommmmudd/ness-tools/gtr_score_4_playPosition.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
 [<-- Previous Tutorial (3)](https://tommmmudd.github.io/ness-tools/tutorials/tutorial3)  / / /  [Next Tutorial (5) -->](https://tommmmudd.github.io/ness-tools/tutorials/tutorial5)
 

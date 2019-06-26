@@ -1,4 +1,4 @@
-# NESS Guitar Tutorial 2
+# NESS Guitar Score Tutorial 2
 Plucking with more control
 
 This tutorial looks at how to specify additional parameters to the `pluck()` function

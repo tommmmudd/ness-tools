@@ -1,4 +1,4 @@
-# NESS Guitar Tutorial 1
+# NESS Guitar Score Tutorial 1
 Plucking strings
 
 This tutorial looks at:
