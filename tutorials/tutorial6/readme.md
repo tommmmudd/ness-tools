@@ -1,4 +1,4 @@
-# NESS Guitar Score Tutorial 5
+# NESS Guitar Score Tutorial 6
 This tutorial looks at plucking harmonics in a little more depth.
 
 Audio example of this code: [score_tut_6.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_6.mp3)
