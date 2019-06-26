@@ -52,7 +52,7 @@ In full, playHarmonic can take 7 parameters:
 
 You can either specify these in order, like this:
 ```python
-my_score.playHarmonic(3, 3.7, 	1/6.0, pluckPos=0.754)
+my_score.playHarmonic(3, 3.7, 1/6.0, 0.01, 0.015, 0.754, 0.4)
 ```
 
 Or you can name the parameters you want to set, as we have done above with pluckPos. Note that the finger downward force is very sensitive for the harmonic! If you press harder, you will get the fretted sound of the string. If you press more gently, you will get the sound of the open string.
