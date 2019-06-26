@@ -1,4 +1,4 @@
-# NESS Guitar Tutorial 4
+# NESS Guitar Tutorial 5
 This tutorial looks at plucking harmonics with the `playHarmonic()` function
 
 Audio example of this code: [score_tut_5.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_5.mp3)
