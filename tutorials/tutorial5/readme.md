@@ -29,7 +29,11 @@ This simple example is shown here that plays a 12th fret harmonic on string 1:
 ```python
 my_score.playHarmonic(1, 0.5, 	1/2.0)   # harmonic on string 1, at time 0.5, halfway along the string (12th fret harmonic)
 ```
-The third argument here, `1/2.0` is the position as we saw in the last tutorial. Here though it is useful to think in terms of fractions, as harmonics exist at whole number ratios, such as 1/2, 1/3, 1/4, 1/5, etc. Notice also that the denominator is specified as a floating point number, `2.0`. This is necessary for Python to create a fractional number rather than a whole number. Below are some other harmonic events at subsequent points in time across the three strings:
+The third argument here, `1/2.0` is the position as we saw in the last tutorial. Here though it is useful to think in terms of fractions, as harmonics exist at whole number ratios, such as 1/2, 1/3, 1/4, 1/5, etc. Notice also that the denominator is specified as a floating point number, `2.0`. This is necessary for Python to create a fractional number rather than a whole number.
+
+![Harmonics](https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Moodswingerscale.svg/1920px-Moodswingerscale.svg.png)
+
+ Below are some other harmonic events at subsequent points in time across the three strings:
 
 ```python
 my_score.playHarmonic(2, 0.6, 	1/2.0)   # string 2 at t=0.6s, 12th fret harmonic (0.5)
