@@ -1,4 +1,4 @@
-# NESS Guitar Tutorial 3
+# NESS Guitar Score Tutorial 3
 Putting fingers on frets with playFret()
 
 
