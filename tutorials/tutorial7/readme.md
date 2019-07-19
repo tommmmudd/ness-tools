@@ -25,6 +25,8 @@ You can find lots of examples of guitar tabs as plain txt files on sites such as
 # Converting tabs to score files
 Let's set up a score object to put our tab into:
 ```python
+from nesstools import guitar
+
 numberOfStrings = 6         # how many strings should the guitar have?
 my_score = guitar.GuitarScore(0, numberOfStrings) 
 ```
