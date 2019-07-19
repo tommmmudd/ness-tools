@@ -1,7 +1,9 @@
 # NESS Guitar Score Tutorial 7
 This tutorial looks at creating a score from guitar tab.
 
-Audio example of this code: [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3)
+Audio example of this code (custom tab): [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3).
+
+Audio example of this code (bach tab file): [score_tut_7a.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7a.mp3)
 
 The code for this tutorial can be found in the [gtr_score_7_tab1.py](https://github.com/tommmmudd/ness-tools/gtr_score_7_tab1.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
@@ -58,9 +60,34 @@ This is all we need to do to create our score file! So now we just write it, and
 my_score.write("ness_files_to_process/gtr_score_7_tab1.m")
 ```
 
-In the next tutorial we will look at importing an entire tab from a txt file.
+# Importing a txt tab file
+You can also import a txt file of a guitar tab and pass that to the `tabToScore` function in place of your list of strings. Try downloading a txt tab - e.g. [this one](https://www.classtab.org/bach_js_bwv0578_fugue_in_gm_little_fugue.txt). Either move the txt file to the same directory as your python script, or make a note of the file path.
 
-Audio example of this code: [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3)
+Create a variable with the path to the file:
+
+```python 
+tabFile = "bach_js_bwv0578_fugue_in_gm_little_fugue.txt"
+# or, if the file is not moved into the folder, then something like:
+# tabFile = "/Users/username/path/to/file/tabfile.txt"
+```
+
+We'll create a new score object and specify this path directly to the `tabToScore` function:
+
+```python
+tabFile_score = guitar.GuitarScore(0, numberOfStrings)
+tabFile_score.tabToScore(tabFile, numberOfStrings, 1.0)
+```
+
+As before, you can pass a rate argument to determine the speed of playback. You'll then need to write the score:
+```python
+tabFile_score.write("ness_files_to_process/gtr_score_7_tabFile.m")
+```
+
+
+
+Audio example of this code (custom tab): [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3).
+
+Audio example of this code (bach tab file): [score_tut_7a.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7a.mp3)
 
 The code for this tutorial can be found in the [gtr_score_7_tab1.py](https://github.com/tommmmudd/ness-tools/gtr_score_7_tab1.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
 
