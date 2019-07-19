@@ -1619,7 +1619,7 @@ class GuitarScore(object):
                     tempTabLine = []
             else:
                 # collect the six lines together in tempTabLine
-                tempTabLine.append(line)
+                tempTabLine.insert(0, line)
             if len(tempTabLine) >= stringCount:
                 outputTabLines.append( tempTabLine )
                 tempTabLine = []

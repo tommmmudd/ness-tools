@@ -15,7 +15,7 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 5. [Playing harmonics with playHarmonic()](https://tommmmudd.github.io/ness-tools/tutorials/tutorial5)
 6. [A more advanced look at harmonics](https://tommmmudd.github.io/ness-tools/tutorials/tutorial6)
 7. [Creating scores from tab and tab files](https://tommmmudd.github.io/ness-tools/tutorials/tutorial7)
-8. (coming soon) Creating scores from MIDI files
+8. [Creating scores from MIDI files](https://tommmmudd.github.io/ness-tools/tutorials/tutorial8)
 9. (coming soon) Creating structures with iteration #1
 10. (coming soon) Creating structures with iteration #1
 11. (coming soon) NESS Recipe #1: a simple plucking piece
