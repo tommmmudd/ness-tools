@@ -82,6 +82,7 @@ As before, you can pass a rate argument to determine the speed of playback. You'
 tabFile_score.write("ness_files_to_process/gtr_score_7_tabFile.m")
 ```
 
+In the next tutorial we will use a similar process for translating MIDI files into Ness scores.
 
 
 Audio example of this code (custom tab): [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3).   
