@@ -2,7 +2,6 @@
 This tutorial looks at creating a score from guitar tab.
 
 Audio example of this code (custom tab): [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3).
-
 Audio example of this code (bach tab file): [score_tut_7a.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7a.mp3)
 
 The code for this tutorial can be found in the [gtr_score_7_tab1.py](https://github.com/tommmmudd/ness-tools/gtr_score_7_tab1.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
@@ -86,7 +85,6 @@ tabFile_score.write("ness_files_to_process/gtr_score_7_tabFile.m")
 
 
 Audio example of this code (custom tab): [score_tut_7.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7.mp3).
-
 Audio example of this code (bach tab file): [score_tut_7a.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/score_tut_7a.mp3)
 
 The code for this tutorial can be found in the [gtr_score_7_tab1.py](https://github.com/tommmmudd/ness-tools/gtr_score_7_tab1.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
