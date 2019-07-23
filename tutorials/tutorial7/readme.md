@@ -82,6 +82,28 @@ As before, you can pass a rate argument to determine the speed of playback. You'
 tabFile_score.write("ness_files_to_process/gtr_score_7_tabFile.m")
 ```
 
+Note that the assumption that each horizontal character represents a fixed time step, there can be timing inconsistencies in certain tabs. This is often an issue around bar and line endings and beginnings. In the Little Fugue example used for this tutorial for instance, although the beats of the bar are spaced accurately (8 characters per beat), the bar and line endings add extra spacing for readability. 
+
+```
+1  |       |       |       |
+|----------------------------------|
+|----------3-----------------------|
+|--0---------------3-----------2---| 
+|----------------------------------|
+|----------------------------------|
+|----------------------------------|
+
+2  |       |       |       |         |       |       |       |
+|----------------------------------|---------------------------------|
+|----------------------------------|---------------------------------|
+|--0---3---2---0-------2-----------|-0-------2-------3---2-0-2-------|
+|------------------4-------0-------|-----0-------0---------------0---|
+|----------------------------------|---------------------------------|
+|----------------------------------|---------------------------------|
+```
+In the tab shown here, note the extra 2 hyphens at the start of each line, and extra single hyphen at the beginning of the third bar. The software currently automatically removes a single hyphen at the start of each bar, but doesn't do so for the extra space on each line. You may therefore have to edit the tab file before converting to make sure there is rhythmic consistency. 
+
+
 In the next tutorial we will use a similar process for translating MIDI files into Ness scores.
 
 
