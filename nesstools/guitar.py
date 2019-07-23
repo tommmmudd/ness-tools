@@ -397,7 +397,7 @@ class GuitarScore(object):
         self.frets = ["" for a in range(self.stringCount)]#["0.331" for a in range(self.stringCount)]
         self.prevFrets = ["" for a in range(self.stringCount)]#["0" for a in range(self.stringCount)]
         self.pluckF = pluckF
-        self.fretFingerPos = 0.75
+        self.fretFingerPos = 0.667
         self.fingerHeight = 0.0
         self.distanceBehindFret = 0.0035
         self.capo = 0
@@ -1578,7 +1578,7 @@ class GuitarScore(object):
         alwaysPluck = False     # if this is False, it'll just do it with finger slides unless it is a repeated note
         #fingerForce = 1.8;
         fingerNegativeForce = -1;
-        offsetVal = 1;      # offset for end of line things?
+        offsetVal = -2;      # offset for end of line things?
         glideTime = 0.004;
         #higherFrets = True     # if False, "12" would mean fret 1 then fret 2
         #stringCount = 6

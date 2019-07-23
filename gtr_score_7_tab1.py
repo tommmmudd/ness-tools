@@ -42,7 +42,7 @@ my_score.write("ness_files_to_process/gtr_score_7_tab1.m")
 # make sure you download this txt file first and move it to this directory:
 # https://www.classtab.org/bach_js_bwv0578_fugue_in_gm_little_fugue.txt
 
-tabFile = "bach_js_bwv0578_fugue_in_gm_little_fugue.txt"
+tabFile = "tab/bach_js_bwv0578_fugue_in_gm_little_fugue.txt"
 
 tabFile_score = guitar.GuitarScore(0, numberOfStrings)
 tabFile_score.tabToScore(tabFile, numberOfStrings, 1.0)

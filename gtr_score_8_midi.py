@@ -21,7 +21,7 @@ my_score = guitar.GuitarScore(0, numberOfStrings)
 
 
 # download a Midi file (e.g. from https://freemidi.org), move it to this directory, then specify the file name like so:
-midiFile = "Believe.mid"
+midiFile = "midi/Believe.mid"
 
 # specify the playback rate for this midi file
 rate = 0.6
