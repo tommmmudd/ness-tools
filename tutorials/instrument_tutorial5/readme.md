@@ -113,10 +113,15 @@ my_guitar.strings[2].outputPos = 0.72   # pickup position is nearer 19th fret
 my_guitar.strings[3].outputPos = 0.5   # pickup position is at 12th fret!
 ```
 
-Note that the settings for strings 0 and 3 are quite extreme! Experiment with your own settings. Make sure you write the instrument file too.
+Note that the settings for strings 0 and 3 are quite extreme! Experiment with your own settings. Make sure you write the instrument file at the end of your Python script.
 
 ```python
 my_guitar.write("ness_files_to_process/inst_5_instrument.m")
 ```
 
 
+Audio example of this code: [inst_tut_5.mp3](http://tommudd.co.uk/ness/audio/gtr_tutorials/inst_tut_5.mp3)
+
+The code for this tutorial can be found in the [gtr_instrument_5_params_2.py](https://github.com/tommmmudd/ness-tools/gtr_instrument_5_params_2.py.py) file. For help on running the code see the [main repository page](https://tommmmudd.github.io/ness-tools/).
+
+[<-- Previous Tutorial (4)](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial4)  / / /  [Next Tutorial (6) -->](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial6)
