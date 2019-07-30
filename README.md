@@ -27,7 +27,7 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 3. [Tuning / Microtones](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
 4. [Customising string parameters #1](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial4)
 5. [Customising string parameters #2](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial5)
-6. (more coming soon)
+6. [Customising fretboard parameters](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial6)
 
 # How to run these files
 - Clone or download this repository
