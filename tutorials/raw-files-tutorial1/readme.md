@@ -79,7 +79,7 @@ normalize_outs = 0;    % individually normalise output channels
 Save your file. We will now make a quick score file that we can use to test this instrument.
 
 ## Creating a simple score file
-The score file also has a few necessary elements. Firstly, we are required to provide the total duration of the score file. This simulation will cut off abruptly after this amount of time, so make sure you leave room for the sound to decay to zero! In some of our examples we will be a little lazy with this just to test things slightly more quickly.
+Create another new file with your text editor, and save the empty file as *score_single_string.m*. The score file also has a few necessary elements. Firstly, we are required to provide the total duration of the score file. This simulation will cut off abruptly after this amount of time, so make sure you leave room for the sound to decay to zero! In some of our examples we will be a little lazy with this just to test things slightly more quickly.
 
 The time is specified as Tf:
 ```matlab
@@ -91,7 +91,7 @@ Secondly, we need to create a specific variable called *exc* that we will use to
 exc = [];   % array for excitation events
 ```
 
-We can now add excitation events. Here we will use the *pluck_gen* function. This takes seven arguments:
+We can now add excitation events. Here we will use the *event_gen* function. This takes seven arguments:
 - the excitation array, exc
 - the **string number** (e.g. 1 in our case)
 - the **time** at which to excite (in seconds - must be less that then Tf duration!)
@@ -100,9 +100,31 @@ We can now add excitation events. Here we will use the *pluck_gen* function. Thi
 - the **force** of the excitation in Newtons
 - the **type** of event, where 0 is a strike and 1 is a pluck
 
+The syntax for an event looks like this:
 ```matlab
 % excitation event, where string=1, time=0.01, pos=0.8, duration=0.001, force=2, type=0 (strike)
 exc = event_gen(exc, 1, 0.01, 0.8, 0.001, 2, 1);
 ```
 
 
+
+## Testing the Instrument and Score files
+Now that we have an excitation event, we can try running this though the NESS system to generate audio. Go to [NESS User Interface](https://ness-frontend.eca.ed.ac.uk/) and use the *Browse...* buttons to upload your score and instrument files. Press the *Submit Job* button to send the files. After a short time you should see an audio file player appear that will play back a stereo mix of your file as shown below.
+
+![NESS audio playback](http://tommudd.co.uk/ness/images/ness_interface_playback.png)
+
+If your file is quite long, the system will not give you the player and will give you a message with a rough estimate of how long the processing will take as shown here:
+
+![NESS long processing message](http://tommudd.co.uk/ness/images/ness_slow_processing.png)
+
+In this case you will need to use the link to the folder where the files will appear when they are ready. This is the *Click for result directory (opens in new tab)* link in the image above. The folder will initially just contain your score and instrument files:
+
+![NESS waiting for results](http://tommudd.co.uk/ness/images/ness_waiting_for_results.png)
+
+Refresh the page to check whether the processing has been completed. When the files have been created, you will see audio files in the directory as shown below.
+
+![NESS results](http://tommudd.co.uk/ness/images/ness_results.png)
+
+The *output-mix.wav* file is the stereo mix of any number of outputs. If you have more than one string, you will also see files named *output-string1-1.wav*, *output-string2-2.wav* etc. These correspond to the ```output_def``` specified in your instrument.
+
+You can download the files to listen to and work with the stereo mix or the individual string files.
