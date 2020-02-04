@@ -58,7 +58,7 @@ itnum = 20;            % don't change this!
 
 Finally, a useful but not essential addition is this line:
 ```matlab
-normalize_outs = 0;             % individually normalise output channels
+normalize_outs = 0;    % individually normalise output channels
 ```
 This makes sure all the string output wavs are normalised.
 
@@ -73,7 +73,32 @@ output_def = [1 0.8];  % string one outputs 80% of the way along the string
 pan = [0]              % 0 is the centre
 itnum = 20;            % don't change this!
 
-normalize_outs = 0;             % individually normalise output channels
+normalize_outs = 0;    % individually normalise output channels
 ```
 
-Save your file. We will now make a quick score file that we can use to test this.
+Save your file. We will now make a quick score file that we can use to test this instrument.
+
+## Creating a simple score file
+The score file also has a few necessary elements. Firstly, we are required to provide the total duration of the score file. This simulation will cut off abruptly after this amount of time, so make sure you leave room for the sound to decay to zero! In some of our examples we will be a little lazy with this just to test things slightly more quickly.
+
+The time is specified as Tf:
+```matlab
+Tf = 10;   % duration in seconds
+```
+
+Secondly, we need to create a specific variable called *exc* that we will use to store our plucking and striking excitation events. This is done with the following line:
+```matlab
+exc = [];   % array for excitation events
+```
+
+We can now add excitation events. Here we will use the *pluck_gen* function. This takes seven arguments:
+- the excitation array, exc
+- the **string number** (e.g. 1 in our case)
+- the **time** at which to excite (in seconds - must be less that then Tf duration!)
+- the **position** on the string to excite (0-1)
+- the **duration** of the excitation (usually very small, e.g. 0.001)
+- the **force** of the excitation in Newtons
+- the **type** of event, where 0 is a strike and 1 is a pluck
+
+% excitation event, where string=1, time=0.01, pos=0.8, duration=0.001, force=2, type=0 (strike)
+exc = event_gen(exc, 1, 0.01, 0.8, 0.001, 2, 1);
