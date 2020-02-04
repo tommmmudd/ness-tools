@@ -1,3 +1,5 @@
 .DS_Store
 ness_files_to_process/
 old/
+workbench.py
+na_*

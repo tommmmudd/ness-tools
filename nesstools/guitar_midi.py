@@ -2,7 +2,7 @@
 from . import brass
 import random as r
 # fr MIDI strings
-#import midi
+import midi
 
 from midiutil.MidiFile import MIDIFile
 
@@ -526,6 +526,7 @@ class GuitarScore(object):
         """place a finger lightly at a particular position and pluck to obtain a harmonic. Adds to scorefile parameters fingerStrings[s] and plucks"""
         scaledForce = harmonicForceFromPosition(pos, fingerF)
         onF = str(scaledForce)
+        # to do: add a way for the pluckPos to avoid the specific harmonic
         if not isinstance(strings, list):
             strings = [strings]  # make it into a list, and 
         for s in strings:
@@ -1906,7 +1907,7 @@ class GuitarScore(object):
         return newVal
 
 
-    '''def midiToScore(self, midiFile, stringCount=6, rate=1.0, transpose=0, alwaysPluck=True):
+    def midiToScore(self, midiFile, stringCount=6, rate=1.0, transpose=0, alwaysPluck=True):
         """Convert a txt file of guitar tab to a NESS score file
 
         Tab should be in lines in the following format:
@@ -1988,7 +1989,7 @@ class GuitarScore(object):
                     maxT = t
 
         maxT = round(maxT+5)
-        return (finger_defs, maxT)'''
+        return (finger_defs, maxT)
 
 
 def getEventsAndTimings(pattern):
