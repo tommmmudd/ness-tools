@@ -100,5 +100,9 @@ We can now add excitation events. Here we will use the *pluck_gen* function. Thi
 - the **force** of the excitation in Newtons
 - the **type** of event, where 0 is a strike and 1 is a pluck
 
+```matlab
 % excitation event, where string=1, time=0.01, pos=0.8, duration=0.001, force=2, type=0 (strike)
 exc = event_gen(exc, 1, 0.01, 0.8, 0.001, 2, 1);
+```
+
+
