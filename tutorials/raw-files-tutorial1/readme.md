@@ -91,7 +91,7 @@ Secondly, we need to create a specific variable called *exc* that we will use to
 exc = [];   % array for excitation events
 ```
 
-We can now add excitation events. Here we will use the *event_gen* function. This takes seven arguments:
+We can now add excitation events. Here we will use the ```event_gen``` function. This takes seven arguments:
 - the excitation array, exc
 - the **string number** (e.g. 1 in our case)
 - the **time** at which to excite (in seconds - must be less that then Tf duration!)
