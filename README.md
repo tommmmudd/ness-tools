@@ -16,8 +16,8 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 6. [A more advanced look at harmonics](https://tommmmudd.github.io/ness-tools/tutorials/tutorial6)
 7. [Creating scores from tab and tab files](https://tommmmudd.github.io/ness-tools/tutorials/tutorial7)
 8. [Creating scores from MIDI files](https://tommmmudd.github.io/ness-tools/tutorials/tutorial8)
-9. (coming soon) Creating structures with iteration #1
-10. (coming soon) Creating structures with iteration #1
+9. [Creating structures with iteration #1](https://tommmmudd.github.io/ness-tools/tutorials/tutorial9)
+10. [Creating structures with iteration #2](https://tommmmudd.github.io/ness-tools/tutorials/tutorial10)
 11. (coming soon) NESS Recipe #1: a simple plucking piece
 12. (coming soon) NESS Recipe #2: a fretless just intonation tuning piece
 
@@ -27,7 +27,8 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 3. [Tuning / Microtones](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial3)
 4. [Customising string parameters #1](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial4)
 5. [Customising string parameters #2](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial5)
-6. (more coming soon)
+6. [Customising fretboard parameters](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial6)
+7. [Adding Preparations](https://tommmmudd.github.io/ness-tools/tutorials/instrument_tutorial7)
 
 # How to run these files
 - Clone or download this repository
