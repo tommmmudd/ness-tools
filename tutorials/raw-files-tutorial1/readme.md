@@ -1,0 +1,79 @@
+# Raw score and instrument files 1
+This tutorial looks at creating score and instrument files by directly editing the .m files.
+
+Here we will create text files that describe a virtual instrument (instrument files) and that tell that instrument what to do (score files)
+
+## To run these files
+- You will need to register for an account:
+- 1) Register for an EASE Friend account with the University of Edinburgh: https://www.ease.ed.ac.uk/friend/
+- 2) Then email the NESS team synthesis@epcc.ed.ac.uk, including your EASE username (usually your email address) in the email.  You will then be added to the user access list for the NESS web UI.
+- Upload your score and instrument .m files to the [NESS User Interface](https://ness-frontend.eca.ed.ac.uk/) to create audio files
+
+## To edit these files
+You will need a simple text editor. Notepad or TextEdit will do, but something with syntax highlighting might be useful, e.g. [Sublime Text](https://www.sublimetext.com/) or [Atom](https://atom.io/)
+
+## Creating a simple string instrument file
+Create a new document with your text editor and save the empty file as *inst_single_string.m*.
+
+There are a few fundamental things that will need to be in an instrument file for the net1 code.
+The file should start with this line:
+
+```matlab
+%gtversion 1.0
+```
+
+On a new line, a sample rate is also necessary, e.g. 44100, 48000, 96000, etc.
+```matlab
+SR=48000;       % Sample rate
+```
+
+Note that text to the right of the % sign is treated as a comment in the code, and doesn't actually do anything, it is just a note to help you with the code (with the exception of the %gtversion message).
+
+We will define a single string here. This requires a list of **six** parameters that represent:
+- the string length in metres
+- the material type where 1: steel, 2: gold, 3: lead
+- the tension in Newtons
+- the radius in metres
+- the decay time (T60) for low frequencies (at DC)
+- the decay time (T60) for higher frequencies (at 1kHz)
+
+Our string definition might therefore look like this:
+```matlab
+string_def = [0.68 1 12.1 0.0002 15 5];
+```
+This creates a steel string that is 68cm long, 0.02cm in radius, tightened to 12.1 newtons, with a decay time of 15 seconds for low frequencies and 5 seconds for higher frequences.
+
+As a minimum requirement for a working instrument file, we also require the following:
+- An output_def: at least one output position on the string to take a reading from (this acts a little bit like a pickup)
+- A pan position (between ±1) for each of the outputs (a stereo file will automatically be created that mixes the outputs together)
+- the line *itnum = 20;*
+
+
+The syntax for these lines looks like this:
+```matlab
+output_def = [1 0.8];  % string one outputs 80% of the way along the string 
+pan = [0]              % 0 is the centre
+itnum = 20;            % don't change this!
+```
+
+Finally, a useful but not essential addition is this line:
+```matlab
+normalize_outs = 0;             % individually normalise output channels
+```
+This makes sure all the string output wavs are normalised.
+
+Your final instrument file should now look something like this:
+```matlab
+%gtversion 1.0
+SR=48000;     % sample rate
+
+string_def = [0.68 1 12.1 0.0002 15 5];
+
+output_def = [1 0.8];  % string one outputs 80% of the way along the string 
+pan = [0]              % 0 is the centre
+itnum = 20;            % don't change this!
+
+normalize_outs = 0;             % individually normalise output channels
+```
+
+Save your file. We will now make a quick score file that we can use to test this.
