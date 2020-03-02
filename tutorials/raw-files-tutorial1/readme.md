@@ -3,6 +3,8 @@ This tutorial looks at creating score and instrument files by directly editing t
 
 Here we will create text files that describe a virtual instrument (instrument files) and that tell that instrument what to do (score files)
 
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2/)
+
 ## To run these files
 - You will need to register for an account:
 - 1) Register for an EASE Friend account with the University of Edinburgh: https://www.ease.ed.ac.uk/friend/
@@ -128,3 +130,5 @@ Refresh the page to check whether the processing has been completed. When the fi
 The *output-mix.wav* file is the stereo mix of any number of outputs. If you have more than one string, you will also see files named *output-string1-1.wav*, *output-string2-2.wav* etc. These correspond to the ```output_def``` specified in your instrument.
 
 You can download the files to listen to and work with the stereo mix or the individual string files.
+
+[<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2/)
