@@ -29,7 +29,7 @@ On a new line, a sample rate is also necessary, e.g. 44100, 48000, 96000, etc.
 SR=48000;       % Sample rate
 ```
 
-Note that text to the right of the % sign is treated as a comment in the code, and doesn't actually do anything, it is just a note to help you with the code (with the exception of the %gtversion message).
+Note that text to the right of the % sign is treated as a comment in the code, and doesn't actually do anything, it is just a note to help you with the code (with the exception of the %gtversion message). Note also the **semicolon** at the end of the line. You will need this at the end of all non-comment lines
 
 We will define a single string here. This requires a list of **six** parameters that represent:
 - the string length in metres
@@ -54,7 +54,7 @@ As a minimum requirement for a working instrument file, we also require the foll
 The syntax for these lines looks like this:
 ```matlab
 output_def = [1 0.8];  % string one outputs 80% of the way along the string 
-pan = [0]              % 0 is the centre
+pan = [0];              % 0 is the centre
 itnum = 20;            % don't change this!
 ```
 
@@ -72,7 +72,7 @@ SR=48000;     % sample rate
 string_def = [0.68 1 12.1 0.0002 15 5];
 
 output_def = [1 0.8];  % string one outputs 80% of the way along the string 
-pan = [0]              % 0 is the centre
+pan = [0];              % 0 is the centre
 itnum = 20;            % don't change this!
 
 normalize_outs = 0;    % individually normalise output channels
