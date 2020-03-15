@@ -1,7 +1,7 @@
 # Raw score and instrument files 3
 This tutorial expands our instrument by adding connections between strings
 
-[<-- Previous Tutorial](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial1/) / / / [Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial3/)
+[<-- Previous Tutorial](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2/) / / / [Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Troubleshooting -->](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial4/)
 
 ## String connections
 We can add a connection between a point on any string to a point on any other string (or even to the same string). We need to define several parameters to do this:
@@ -37,5 +37,5 @@ As with the ```string_def```, the ```ssconnect_def``` can have multiple connecti
 ssconnect_def = [0.0001, 10000, 2, 1.6, 0.0001, 1, 0.8, 2, 0.7;   0.0001, 10000, 2, 1.6, 0.0001, 2, 0.1, 2, 0.95;   0.0001, 10000, 2, 1.6, 0.0001, 1, 0.8, 0, 0.7];
 ```
 
-
+[<-- Previous Tutorial](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2/) / / / [Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Troubleshooting -->](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial4/)
 
