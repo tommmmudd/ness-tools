@@ -1,6 +1,9 @@
 # NESS FUNCTIONS!!
 from . import brass
 import random as r
+import os
+import os
+from shutil import copyfile, move
 # fr MIDI strings
 #import midi
 
@@ -8,8 +11,40 @@ from midiutil.MidiFile import MIDIFile
 
 
 
+def chooseFrom(newSet):
+    return newSet[r.randint(0, len(newSet)-1)]
 
-# BRASS
+# handling files and so on
+class NESSProject:
+    def __init__(self, scriptFile, folder="NESS_projects", projectName="new_project"):
+        self.randomNum = r.randint(1000, 9999)
+        self.dirname = folder
+        self.projectName = projectName
+        self.script = scriptFile
+        self.directory = self.dirname+"/"+self.projectName+"_"+str(self.randomNum)
+        self.instName = "inst_"+projectName+"_"+str(self.randomNum)+".m"
+        self.scoreName = "score_"+projectName+"_"+str(self.randomNum)+".m"
+        self.tabName = "tab_"+projectName+"_"+str(self.randomNum)+".txt"
+        self.init()
+
+    def init(self):
+        print( "creating "+self.directory )
+        if not os.path.exists(self.dirname):
+            os.makedirs(self.dirname)
+        if not os.path.exists(self.directory):
+            os.makedirs(self.directory)
+            os.makedirs(self.directory+"/wavs")
+
+    def getDirectory(self):
+        return self.directory+"/"
+
+    def write(self):
+        copyfile(self.script, self.directory+"/"+os.path.basename(self.script))
+        copyfile(os.path.realpath(__file__), self.directory+"/guitar.py")
+        move(os.path.dirname(os.path.realpath(self.script))+"/"+self.scoreName, self.directory+"/"+self.scoreName)
+        move(os.path.dirname(os.path.realpath(self.script))+"/"+self.instName, self.directory+"/"+self.instName)
+
+
 
 
 #SCALE CREATOR
@@ -109,6 +144,10 @@ class StringInstrument(object):
         self.fingerStiffness = 1e7
         self.fingerExp = 1.6
         self.fingerLoss = 120
+
+        self.connectionNum = 0
+        self.connections = []
+        self.sympatheticStringCount = 0
 
     def defaultGuitar(self, kind="regular"):
         """Quick function to setup the strings for a basic 6 string steel guitar"""
@@ -295,6 +334,71 @@ class StringInstrument(object):
         for string in self.strings:
             string.length += (r.random()*2*detuneAmount) - detuneAmount
 
+    def addRandomConnection(self):
+        stringA = r.randint(1, self.stringCount);
+        stringB = r.randint(0, self.stringCount);
+        return Net1Connection(stringA, stringB)
+
+    def addTetheredStrings(self, stringRatios=[1, 1, 1, 1, 1, 1], mass=0.0001, loss=0.0001):
+        for i in range(self.stringCount):
+            self.strings.append ( NessString(self.strings[i].length*0.25*stringRatios[i], self.strings[i].ym, self.strings[i].tension, self.strings[i].radius, self.strings[i].density, self.strings[i].lowDecay, self.strings[i].highDecay) )
+            self.connections.append( Net1Connection(i+1, self.stringCount+(i+1)) )
+            self.connections[-1].mass = mass
+            self.connections[-1].loss = loss
+            self.connections[-1].connectionA = 0.9 + r.uniform(-0.05, 0.05)
+            self.connections[-1].connectionB = 0.4 + r.uniform(-0.05, 0.05)
+        self.connectionNum = self.stringCount
+
+    def addInterconnections(self, count=1, mass=0.0001, loss=0.0001):
+        for i in range(count):
+            stringA = r.randint(1, self.stringCount);
+            stringB = r.randint(0, self.stringCount);
+            self.connections.append( Net1Connection(stringA, stringB) )
+            self.connections[-1].mass = mass
+            self.connections[-1].loss = loss
+            self.connections[-1].connectionA = 0.9 + r.uniform(-0.05, 0.05)
+            self.connections[-1].connectionB = 0.9 + r.uniform(-0.05, 0.05)
+        self.connectionNum = self.stringCount
+
+    def addSympatheticStrings(self, chord=[40, 45, 50, 55, 59, 64], mass=0.0001, loss=0.0001):
+        self.sympatheticStringCount = len(chord)
+        for i in range(len(chord)):
+            # add the string and tune it according to the inputted notes
+            if i < self.stringCount:
+                self.strings.append ( NessString(self.strings[i].length, self.strings[i].ym, self.strings[i].tension, self.strings[i].radius, self.strings[i].density, self.strings[i].lowDecay, self.strings[i].highDecay) )
+            else:
+                #just in case there are more notes in the inputted chord than there are strings...?
+                self.strings.append ( NessString(self.strings[0].length, self.strings[0].ym, self.strings[0].tension, self.strings[0].radius, self.strings[0].density, self.strings[0].lowDecay, self.strings[0].highDecay) )
+            self.tuneString(self.stringCount+(i+1), chord[i])
+
+            stringB = self.stringCount + (i+1)
+
+            # add a connection from each of the initial strings
+            for j in range(self.stringCount):
+                stringA = (j+1)
+                self.connections.append( Net1Connection(stringA, stringB) )
+                self.connections[-1].mass = mass
+                self.connections[-1].loss = loss
+                self.connections[-1].connectionA = 0.9 + r.uniform(-0.05, 0.05)
+                self.connections[-1].connectionB = 0.5 + r.uniform(-0.35, 0.35)
+        # update the connection count
+        self.stringCount += len(chord)
+        self.connectionNum += len(chord) * self.stringCount
+
+    def connectSympatheticStrings(self, mass=0.0001, loss=0.0001):
+        # assuming sympathetic strings to be the final ones in the array
+        for i in range(self.sympatheticStringCount):
+            stringA = len(self.strings) - (i+1)
+            for j in range(self.sympatheticStringCount - (i+1)):
+                stringB = j+1
+                self.connections.append( Net1Connection(stringA, stringB) )
+                self.connections[-1].mass = mass
+                self.connections[-1].loss = loss
+                self.connections[-1].connectionA = 0.5 + r.uniform(-0.35, 0.35)
+                self.connections[-1].connectionB = 0.5 + r.uniform(-0.35, 0.35)
+                self.connectionNum += 1
+
+
     def write(self, fName):
         """Output the instrument in its current state as 'fName' for use with the NESS model"""
         print( "writing "+self.name+" as: "+fName )
@@ -318,13 +422,14 @@ class StringInstrument(object):
             if not isinstance(string.outputPos, list):
                 # if it's a single value
                 out.write(str(i+1)+" "+str(string.outputPos))
-                if i != (len(self.strings)-1):
-                    out.write("; ")
+                # REMOBED: causes problems with doubleStrings that come after...
+                #if i != (len(self.strings)-1):
+                out.write("; ")
             else:
                 # if it's a list
                 for out_pos in string.outputPos:
-                   out.write(str(i+1)+" "+str(out_pos)+";") 
-            
+                   out.write(str(i+1)+" "+str(out_pos)+";")
+
         if (self.doubleStrings):
             for i, string in enumerate(self.extrastrings):
                 if not isinstance(string.outputPos, list):
@@ -335,6 +440,7 @@ class StringInstrument(object):
                         out.write("; ")
                 else:
                     # if it's a list
+                    #out.write("; ")
                     for out_pos in string.outputPos:
                        out.write(str(i+1+self.stringCount)+" "+str(out_pos)+";") 
         out.write("];\n\n")
@@ -367,7 +473,39 @@ class StringInstrument(object):
                 out.write("frets = fret_def_gen(20, 1, %.6f);\n\n" % self.fretHeight)
         if self.fingers:
             out.write("finger_params = [%.6f %.6f %.6f %.6f];\n\n" % (self.fingerMass, self.fingerStiffness, self.fingerExp, self.fingerLoss))
+
+        # net1-like preparations
+        if (self.connectionNum > 0):
+            out.write("ssconnect_def = [")
+            for i, connection in enumerate(self.connections):
+                connection.compileParams()      # just in case things have been updated without updating the params array
+                for j, p in enumerate(connection.params):
+                    out.write(" "+str(p))
+                    if j != (len(connection.params)-1):
+                        out.write(",")
+                if i != (len(self.connections)-1):
+                    out.write("; ")
+            out.write("];\n\n") # close connections
         out.close()
+
+#____________________________________________________
+class Net1Connection(object):
+    def __init__(self, strA, strB):
+        #0.001, 10000, 2, 1.6, loss,  1, 0.8, 2, 0.7
+        self.mass = 0.051           # % mass (kg), >0. Do not set to 0!
+        self.angfreq = 1000         # angular frequency (rad), >0. try to keep below about 1e4
+        self.collexp = 2            # collision exponent (>1, usually <3). Probably best not to use 1 exactly
+        self.rattledistance = 1.6   # rattling distance (m), >=0. Can be zero!
+        self.loss = 0.005           # loss parameter (bigger means more loss). >=0
+        self.stringA = strA         # string index 1 
+        self.connectionA = 0.8      # connection point 1 (0-1)
+        self.stringB = strB         # string index 2: if zero, then no connection
+        self.connectionB = 0.7      # connection point 2 (0-1)
+        self.params = []#self.compileParams()
+
+    def compileParams(self):
+        self.params = [self.mass, self.angfreq, self.collexp, self.rattledistance, self.loss, self.stringA, self.connectionA, self.stringB, self.connectionB] 
+
 
 #____________________________________________________
 class NessString(object):
@@ -428,6 +566,7 @@ class GuitarScore(object):
         self.palmmuteFingerStrings = ["" for a in range(self.stringCount)]
         self.plucks = []         # initial pluck, otherwise it won't run. Could remove
         self.strums = []
+        self.events = []    # ??? string, time, position, duration, force, type (0=strike, 1=pluck)
         self.frets = ["" for a in range(self.stringCount)]#["0.331" for a in range(self.stringCount)]
         self.prevFrets = ["" for a in range(self.stringCount)]#["0" for a in range(self.stringCount)]
         self.pluckF = pluckF
@@ -487,7 +626,7 @@ class GuitarScore(object):
         self.prevFrets[s] = self.frets[s]
         #self.plucks.append( self.makePluck(s+1, t+0.01, pluckF) )
 
-    def playFret(self, strings=1, t=0, frets=0, glideTime=0.005, fingerF=2, pluck=False, pluckF=0.3):
+    def playFret(self, strings=1, t=0, frets=0, glideTime=0.005, fingerF=2, pluck=False, pluckF=0.3, pluckPos=0.8):
         """move a finger on a particular string to a particular fret position at a particular time. No pluck by default. Frets specified as integers. Adds to scorefile parameter fingerStrings[s]"""
         onF = str(fingerF)
         if not isinstance(strings, list):
@@ -503,7 +642,7 @@ class GuitarScore(object):
             self.fingerStrings[s] += str(t-glideTime)+" "+self.prevFrets[s]+" "+onF+"; "
             self.fingerStrings[s] += str(t)+" "+self.frets[s]+" "+onF+"; "
             if pluck:
-                self.pluck(s+1, t, 0.8, 0.0005, pluckF)
+                self.pluck(s+1, t, pluckPos, 0.0005, pluckF)
             self.prevFrets[s] = self.frets[s]
 
     def playPosition(self, strings=1, t=0, pos=0, glideTime=0.005, fingerForce=2):
@@ -575,6 +714,14 @@ class GuitarScore(object):
             strings = [strings]  # make it into a list, and 
         for s in strings:
             self.plucks.append( [ s, t, pos, dur, f] )
+
+
+    def strike(self, strings, t, pos=0.8, dur=0.001, f=1, eventType=0):
+        # eventType: 0 is strike, 1 is pluck
+        if not isinstance(strings, list):
+            strings = [strings]  # make it into a list, and 
+        for s in strings:
+            self.events.append( [ s, t, pos, dur, f, eventType] )
 
 
     def manualStrum(self, strings, t, direction=0, pos=0.8, posVar = 0.05, dur=0.01, f=0.3):
@@ -690,6 +837,13 @@ class GuitarScore(object):
         if len(self.plucks) == 0:
             print( "no plucks defined, so adding one, otherwise score will not be processed\n")
             self.pluck(1, 0.1, 0.8, 0.001, 0.001)
+        for event in self.events:
+            out.write("exc = pluck_gen(exc, ")
+            for i, param in enumerate(event):
+                if i != (len(event) - 1):
+                    out.write(str(param)+", ")
+                else:
+                    out.write(str(param)+");\n\n")
         for pluck in self.plucks:
             out.write("exc = pluck_gen(exc, ")
             for i, param in enumerate(pluck):
