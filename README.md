@@ -9,7 +9,9 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 
 ## Net1 Tutorials
 1. [Raw score and instrument files 1](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial1)
-2. [Raw score and instrument files 2](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2)
+2. [Multiple Strings](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2)
+3. [Adding Connections](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial3)
+4. [Troubleshooting](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial4)
 
 ## NESS Guitar score tutorials:
 1. [Score basics: pluck a couple of a strings](https://tommmmudd.github.io/ness-tools/tutorials/tutorial1)
