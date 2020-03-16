@@ -20,11 +20,10 @@ This should create two files in the "ness_files_to_process" folder called "test_
 To get started using the module for your own creations, you will need to have a text editor such as Sublime Text, Atom, TextWrangler, etc. You can also use notepad or TextEdit, but you will not get any syntax colouration.
 
 Save a blank file as something like ```net1_tutorial1.py``` in the ness-tools-master folder (the ```.py``` extension is important).
-At the top of the file we will import the net1 module from the nesstools along with a random module for randomising some aspects of our score. This should look like this:
+At the top of the file we will import the net1 module from the nesstools. This should look like this:
 
 ```python
 from nesstools import net1
-import random as r  			# for randomising events
 ```
 
 It is also useful to set up some initial variables for our instrument and score, such as the total duration, and the number of strings:
@@ -121,7 +120,6 @@ An example of a fully formed python script from the above is provided below for 
 
 ```python
 from nesstools import net1
-import random as r  			# for randomising events
 
 
 # general variables
