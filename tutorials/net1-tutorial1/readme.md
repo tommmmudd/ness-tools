@@ -123,13 +123,13 @@ from nesstools import net1
 
 
 # general variables
-stringCount = 3         # how many strings should the guitar have?
+stringCount = 2         # how many strings should the guitar have?
 T = 8                   # how long should the piece be (in seconds)?
 
 #________________________________________
 #_____CREATE THE INSTRUMENT FILE_________
 
-# create a string instrument object with 3 strings
+# create a string instrument object with 2 strings
 my_inst = net1.Net1Instrument(stringCount)
 
 # add a connection between string 1 and 2, using the default connection parameters
