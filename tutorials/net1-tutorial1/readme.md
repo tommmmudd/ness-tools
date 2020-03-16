@@ -1,4 +1,4 @@
-# Using the Python nesstools with Net1
+# Using the Python nesstools with Net1 - part 1
 This tutorial introduces the Python nesstools for generating instruments and score files. We will look at setting up and a basic example. This is the same process employed in the NESS guitar tutorials below.
 
 [<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/net1-tutorial2/)
