@@ -891,7 +891,7 @@ class GuitarScore(object):
         out.close()
 
 
-    def makePluck(self, num, time, strength=1, pos=0.8, dur=0.001):
+    def makePluck(self, num, time, strength=1, pos=0.8, dur=0.0025):
         """Generate a five element pluck list to be added to the plucks attribute"""
         str_num = num           # which string? 
         pluck_time = time   # when (seconds)

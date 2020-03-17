@@ -101,11 +101,11 @@ class Net1Instrument(object):
 class Net1Connection(object):
     def __init__(self, strA, strB):
         #0.001, 10000, 2, 1.6, loss,  1, 0.8, 2, 0.7
-        self.mass = 0.051           # % mass (kg), >0. Do not set to 0!
+        self.mass = 0.0001           # % mass (kg), >0. Do not set to 0!
         self.angularFrequency = 1000         # angular frequency (rad), >0. try to keep below about 1e4
-        self.collisionExponent = 2            # collision exponent (>1, usually <3). Probably best not to use 1 exactly
-        self.rattleDistance = 1.6   # rattling distance (m), >=0. Can be zero!
-        self.loss = 0.005           # loss parameter (bigger means more loss). >=0
+        self.loss = 2            # loss parameter (bigger means more loss). >=0
+        self.collisionExponent = 1.6   # collision exponent (>1, usually <3). Probably best not to use 1 exactly       
+        self.rattleDistance = 0.001      # rattling distance (m), >=0. Can be zero!
         self.stringA = strA         # string index 1 
         self.stringAPos = 0.8      # connection point 1 (0-1)
         self.stringB = strB         # string index 2: if zero, then no connection
@@ -121,15 +121,15 @@ class Net1String(object):
         self.material = 1 # #1 = steel, #2 = gold, #3 = lead
         self.tension = 21.9
         self.radius = 0.00015
-        self.t60_0 = 15
-        self.t60_1 = 5
+        self.lowDecay = 15
+        self.highDecay = 5
         self.outputs = [0.78]
         self.params = []
         self.compileParams()
 
     def compileParams(self):
         # add all params to the params array
-        self.params = [self.length, self.material, self.tension,self.radius, self.t60_0, self.t60_1] 
+        self.params = [self.length, self.material, self.tension,self.radius, self.lowDecay, self.highDecay] 
 
 
 class Net1Score(object):
@@ -244,5 +244,5 @@ class Net1Score(object):
         strum_type = 1 # 0 is pluck
         return [strum_time, strum_dur, strum_dir, strum_force, 0.02, pluck_dur, 0.0001, strum_pos, 0.05, r.randint(1, self.stringCount), 0.03, strum_type]
 
-    def makeEvent(self, time, string, strength=0.5, pos=0.8, event_type=1, dur=0.002):
+    def makeEvent(self, time, string=1, strength=0.5, pos=0.8, event_type=1, dur=0.002):
         self.events.append( [string, time, pos, dur, strength, event_type] )
