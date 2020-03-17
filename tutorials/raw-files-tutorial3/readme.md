@@ -6,15 +6,15 @@ This tutorial expands our instrument by adding connections between strings
 ## String connections
 We can add a connection between a point on any string to a point on any other string (or even to the same string). We need to define several parameters to do this:
 
-- mass (kg), >0. Do not set to 0!
-- angular frequency (rad), >0. try to keep below about 1e4
-- loss parameter (bigger means more loss). >=0
-- collision exponent (>1, usually <3). Probably best not to use 1 exactly
-- rattling distance (m), >=0. Can be zero!
-- string index 1 
-- connection point 1 (0-1)
+- mass (kg), >0. Do not set to 0!   (0.001 in the example below)
+- angular frequency (rad), >0. try to keep below about 1e4   (10000 in the example below)
+- loss parameter (bigger means more loss). >=0      (2 in the example below)
+- collision exponent (>1, usually <3). Probably best not to use 1 exactly  (1.6 in the example below)
+- rattling distance (m), >=0. Can be zero!   (0.001 in the example below)
+- string index 1
+- connection point 1 (0-1)  (0.8 in the example below)
 - string index 2: if zero, then no connection
-- connection point 2 (0-1)
+- connection point 2 (0-1)  (0.7 in the example below)
 
 These elements are included in your instrument files as shown below. The parameters 
 ```matlab
