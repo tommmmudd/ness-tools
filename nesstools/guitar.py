@@ -2,10 +2,9 @@
 from . import brass
 import random as r
 import os
-import os
 from shutil import copyfile, move
 # fr MIDI strings
-#import midi
+import midi
 
 from midiutil.MidiFile import MIDIFile
 
@@ -25,6 +24,9 @@ class NESSProject:
         self.instName = "inst_"+projectName+"_"+str(self.randomNum)+".m"
         self.scoreName = "score_"+projectName+"_"+str(self.randomNum)+".m"
         self.tabName = "tab_"+projectName+"_"+str(self.randomNum)+".txt"
+        self.midiName = "midi_"+projectName+"_"+str(self.randomNum)+".mid"
+        self.notesName = "notes_"+projectName+"_"+str(self.randomNum)+".txt"
+        self.textWriter = 0
         self.init()
 
     def init(self):
@@ -34,6 +36,12 @@ class NESSProject:
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
             os.makedirs(self.directory+"/wavs")
+        self.textWrite = open(self.directory+"/"+self.notesName, "w")
+
+
+
+    def addNote(self, textToAdd):
+        self.textWrite.write(textToAdd+"\n")
 
     def getDirectory(self):
         return self.directory+"/"
@@ -43,6 +51,8 @@ class NESSProject:
         copyfile(os.path.realpath(__file__), self.directory+"/guitar.py")
         move(os.path.dirname(os.path.realpath(self.script))+"/"+self.scoreName, self.directory+"/"+self.scoreName)
         move(os.path.dirname(os.path.realpath(self.script))+"/"+self.instName, self.directory+"/"+self.instName)
+        self.textWrite.close()
+
 
 
 
@@ -147,7 +157,7 @@ class StringInstrument(object):
 
         self.connectionNum = 0
         self.connections = []
-        self.sympatheticStringCount = 0
+        self.sympatheticpatheticStringCount = 0
 
     def defaultGuitar(self, kind="regular"):
         """Quick function to setup the strings for a basic 6 string steel guitar"""
@@ -255,6 +265,7 @@ class StringInstrument(object):
         self.strings.append( NessString(0.88, 2e11, 4.8, 0.0002, 7850, 15, 3) )
         self.strings.append( NessString(0.88, 2e11, 9.3, 0.0002, 7850, 15, 3) )
         self.strings.append( NessString(0.88, 2e11, 9.2, 0.00015, 7850, 15, 3) )
+        #startingFrets = earthStartingFrets
 
 
     def lowGuitar(self):
@@ -278,6 +289,7 @@ class StringInstrument(object):
         self.strings.append( NessString(0.68, 2e11, 21.9, 0.00015, 7850, 15, 5) )
         self.strings.append( NessString(0.68, 2e11, 35.2, 0.00015, 7850, 15, 7) )
         self.strings.append( NessString(0.68, 2e11, 27.6, 0.0001, 7850, 15, 5) )
+        startingFrets = earthStartingFrets
 
     def randomGlassGuitar(self, kind="regular"):
         """Setup the strings for a randomly generated 6 string guitar with wide radius strings"""
@@ -339,28 +351,39 @@ class StringInstrument(object):
         stringB = r.randint(0, self.stringCount);
         return Net1Connection(stringA, stringB)
 
-    def addTetheredStrings(self, stringRatios=[1, 1, 1, 1, 1, 1], mass=0.0001, loss=0.0001):
+    def addConnection(self, stringA=1, stringB=2, mass=0.001, angularFrequency=1000, loss=2, collExp=1.6, rattleDistance=0.001, connectionA=0.8, connectionB=0.7):
+        self.connections.append( Net1Connection(stringA, stringB))
+        self.connections[-1].mass = mass
+        self.connections[-1].angularFrequency = angularFrequency
+        self.connections[-1].loss = loss
+        self.connections[-1].collExp = collExp
+        self.connections[-1].rattleDistance = rattleDistance
+        self.connections[-1].connectionA = connectionA
+        self.connections[-1].connectionB = connectionB
+        self.connectionNum += 1
+
+    def addTetheredStrings(self, stringRatios=[1, 1, 1, 1, 1, 1], mass=0.0001, rattleDistance=0.0001):
         for i in range(self.stringCount):
             self.strings.append ( NessString(self.strings[i].length*0.25*stringRatios[i], self.strings[i].ym, self.strings[i].tension, self.strings[i].radius, self.strings[i].density, self.strings[i].lowDecay, self.strings[i].highDecay) )
             self.connections.append( Net1Connection(i+1, self.stringCount+(i+1)) )
             self.connections[-1].mass = mass
-            self.connections[-1].loss = loss
+            self.connections[-1].rattleDistance = rattleDistance
             self.connections[-1].connectionA = 0.9 + r.uniform(-0.05, 0.05)
             self.connections[-1].connectionB = 0.4 + r.uniform(-0.05, 0.05)
         self.connectionNum = self.stringCount
 
-    def addInterconnections(self, count=1, mass=0.0001, loss=0.0001):
+    def addInterconnections(self, count=1, mass=0.0001, rattleDistance=0.0001):
         for i in range(count):
             stringA = r.randint(1, self.stringCount);
             stringB = r.randint(0, self.stringCount);
             self.connections.append( Net1Connection(stringA, stringB) )
             self.connections[-1].mass = mass
-            self.connections[-1].loss = loss
+            self.connections[-1].rattleDistance = rattleDistance
             self.connections[-1].connectionA = 0.9 + r.uniform(-0.05, 0.05)
             self.connections[-1].connectionB = 0.9 + r.uniform(-0.05, 0.05)
         self.connectionNum = self.stringCount
 
-    def addSympatheticStrings(self, chord=[40, 45, 50, 55, 59, 64], mass=0.0001, loss=0.0001):
+    def addSympatheticStrings(self, chord=[40, 45, 50, 55, 59, 64], mass=0.0001, rattleDistance=0.0001):
         self.sympatheticStringCount = len(chord)
         for i in range(len(chord)):
             # add the string and tune it according to the inputted notes
@@ -378,14 +401,14 @@ class StringInstrument(object):
                 stringA = (j+1)
                 self.connections.append( Net1Connection(stringA, stringB) )
                 self.connections[-1].mass = mass
-                self.connections[-1].loss = loss
+                self.connections[-1].rattleDistance = rattleDistance
                 self.connections[-1].connectionA = 0.9 + r.uniform(-0.05, 0.05)
                 self.connections[-1].connectionB = 0.5 + r.uniform(-0.35, 0.35)
         # update the connection count
         self.stringCount += len(chord)
         self.connectionNum += len(chord) * self.stringCount
 
-    def connectSympatheticStrings(self, mass=0.0001, loss=0.0001):
+    def connectSympatheticStrings(self, mass=0.0001, rattleDistance=0.0001):
         # assuming sympathetic strings to be the final ones in the array
         for i in range(self.sympatheticStringCount):
             stringA = len(self.strings) - (i+1)
@@ -393,7 +416,7 @@ class StringInstrument(object):
                 stringB = j+1
                 self.connections.append( Net1Connection(stringA, stringB) )
                 self.connections[-1].mass = mass
-                self.connections[-1].loss = loss
+                self.connections[-1].rattleDistance = rattleDistance
                 self.connections[-1].connectionA = 0.5 + r.uniform(-0.35, 0.35)
                 self.connections[-1].connectionB = 0.5 + r.uniform(-0.35, 0.35)
                 self.connectionNum += 1
@@ -493,10 +516,10 @@ class Net1Connection(object):
     def __init__(self, strA, strB):
         #0.001, 10000, 2, 1.6, loss,  1, 0.8, 2, 0.7
         self.mass = 0.051           # % mass (kg), >0. Do not set to 0!
-        self.angfreq = 1000         # angular frequency (rad), >0. try to keep below about 1e4
-        self.collexp = 2            # collision exponent (>1, usually <3). Probably best not to use 1 exactly
-        self.rattledistance = 1.6   # rattling distance (m), >=0. Can be zero!
-        self.loss = 0.005           # loss parameter (bigger means more loss). >=0
+        self.angularFrequency = 1000         # angular frequency (rad), >0. try to keep below about 1e4
+        self.loss = 2            # collision exponent (>1, usually <3). Probably best not to use 1 exactly
+        self.collExp = 1.6   # rattling distance (m), >=0. Can be zero!
+        self.rattleDistance = 0.001           # loss parameter (bigger means more loss). >=0
         self.stringA = strA         # string index 1 
         self.connectionA = 0.8      # connection point 1 (0-1)
         self.stringB = strB         # string index 2: if zero, then no connection
@@ -504,7 +527,7 @@ class Net1Connection(object):
         self.params = []#self.compileParams()
 
     def compileParams(self):
-        self.params = [self.mass, self.angfreq, self.collexp, self.rattledistance, self.loss, self.stringA, self.connectionA, self.stringB, self.connectionB] 
+        self.params = [self.mass, self.angularFrequency, self.loss, self.collExp, self.rattleDistance, self.stringA, self.connectionA, self.stringB, self.connectionB] 
 
 
 #____________________________________________________
@@ -626,6 +649,23 @@ class GuitarScore(object):
         self.prevFrets[s] = self.frets[s]
         #self.plucks.append( self.makePluck(s+1, t+0.01, pluckF) )
 
+    def playFretNoGlide(self, strings=1, t=0, frets=0, fingerF=0.5, pluck=False, pluckF=0.3, pluckPos=0.8):
+        onF = str(fingerF)
+        if not isinstance(strings, list):
+            strings = [strings]  # make it into a list, and 
+        if not isinstance(frets, list):
+            frets = [frets]  # make it into a list, and
+        for s, f in zip(strings, frets):
+            s = s-1
+            midiFret = self.stringFretToMidi(f, s)      # slides are 0-63
+            self.midiOutput.addEvent(s, t, midiFret, 0.125)          #arbitrary duration of 0.125 seconds?
+            actualPos = self.getFretPos(self.capo+f)
+            self.frets[s] = str( actualPos )
+            self.fingerStrings[s] += str(t)+" "+self.frets[s]+" "+onF+"; "
+            if pluck:
+                self.pluck(s+1, t, pluckPos, 0.0005, pluckF)
+            self.prevFrets[s] = self.frets[s]
+
     def playFret(self, strings=1, t=0, frets=0, glideTime=0.005, fingerF=2, pluck=False, pluckF=0.3, pluckPos=0.8):
         """move a finger on a particular string to a particular fret position at a particular time. No pluck by default. Frets specified as integers. Adds to scorefile parameter fingerStrings[s]"""
         onF = str(fingerF)
@@ -635,6 +675,8 @@ class GuitarScore(object):
             frets = [frets]  # make it into a list, and 
         for s, f in zip(strings, frets):
             s = s-1
+            midiFret = self.stringFretToMidi(f, s)      # slides are 0-63
+            self.midiOutput.addEvent(s, t, midiFret, 0.125)          #arbitrary duration of 0.125 seconds?
             actualPos = self.getFretPos(self.capo+f)
             self.frets[s] = str( actualPos )
             if self.prevFrets[s] == "":
@@ -722,6 +764,7 @@ class GuitarScore(object):
             strings = [strings]  # make it into a list, and 
         for s in strings:
             self.events.append( [ s, t, pos, dur, f, eventType] )
+            # event_gen(exc, 1, 0.1, 0.8, 0.001, strength, 0);
 
 
     def manualStrum(self, strings, t, direction=0, pos=0.8, posVar = 0.05, dur=0.01, f=0.3):
@@ -772,6 +815,9 @@ class GuitarScore(object):
             string_and_fret = [5, note-startingFrets[5]]
         return string_and_fret[0], string_and_fret[1]
 
+
+    def stringFretToMidi(self, fret, s):
+        return startingFrets[s] + fret
 
     def gtrFromBrassScore(self, s, brassScore):
         print("gtrFromBrassScore", len(brassScore.pressure))
@@ -838,7 +884,7 @@ class GuitarScore(object):
             print( "no plucks defined, so adding one, otherwise score will not be processed\n")
             self.pluck(1, 0.1, 0.8, 0.001, 0.001)
         for event in self.events:
-            out.write("exc = pluck_gen(exc, ")
+            out.write("exc = event_gen(exc, ")
             for i, param in enumerate(event):
                 if i != (len(event) - 1):
                     out.write(str(param)+", ")
@@ -2028,11 +2074,11 @@ class GuitarScore(object):
 
 
     def getFretPos(self, fretNum):
-    	fretPos = self.fretPositions[fretNum]
-    	fretSize = fretPos - self.fretPositions[max(0, fretNum-1)]
-    	fingerPos = fretPos - (1-self.fretFingerPos)*fretSize
-    	if fingerPos < 0: fingerPos = 0
-    	return fingerPos
+        fretPos = self.fretPositions[fretNum]
+        fretSize = fretPos - self.fretPositions[max(0, fretNum-1)]
+        fingerPos = fretPos - (1-self.fretFingerPos)*fretSize
+        if fingerPos < 0: fingerPos = 0
+        return fingerPos
 
     def getFretPosFloat(self, fretNumFloat):
         fretPos = self.fretPositions[int(fretNumFloat+1.0)]
@@ -2060,17 +2106,8 @@ class GuitarScore(object):
         return newVal
 
 
-    '''def midiToScore(self, midiFile, stringCount=6, rate=1.0, transpose=0, alwaysPluck=True):
-        """Convert a txt file of guitar tab to a NESS score file
+    def midiToScore(self, midiFile, stringCount=6, rate=1.0, transpose=0, alwaysPluck=True):
 
-        Tab should be in lines in the following format:
-        |--1-3-----... etc ...----7--3---|
-
-        the 'rate' parameter specifies the time per unit, where 1 is 1/8 of a second per unit, 2 is 1/16 of a second per unit, etc
-        if higherFrets is set to "False", then "12" would mean fret 1 then fret 2, rather than fret 12
-
-        # TO DO: read tempo and use that to scale the rate
-        """
         pattern = midi.read_midifile(midiFile)
 
         # TO DO: read tempo and use that to scale the rate
@@ -2142,7 +2179,105 @@ class GuitarScore(object):
                     maxT = t
 
         maxT = round(maxT+5)
-        return (finger_defs, maxT)'''
+        return (finger_defs, maxT)
+
+
+
+    def drumMidiToScore(self, midiFile, stringCount=6, rate=1.0, transpose=0, alwaysPluck=True):
+            """ for translating Modalys MIDI files to guitar scores """
+            pattern = midi.read_midifile(midiFile)
+
+            # TO DO: read tempo and use that to scale the rate
+
+            # PARAMS FOR CONVERSION
+            ticks_to_seconds_ratio = 0.0007/float(rate) # 2000 ticks = one second?
+            # (60000 / (bpm * ppq)
+            pattern.make_ticks_abs()
+
+            events, timings = getEventsAndTimings(pattern)
+            scoreVariables = self.createScoreEventsFromMIDIDrumEvents(events, timings, transpose, ticks_to_seconds_ratio, alwaysPluck)
+            self.fingerStrings = scoreVariables[0];
+            self.T = int(scoreVariables[1]+5);
+            print ("score infomation read from "+midiFile);
+
+
+    def createScoreEventsFromMIDIDrumEvents(self, events, timings, transpose, ticks_to_seconds_ratio, alwaysPluck):
+        startingFrets = [40, 45, 50, 55, 59, 64];
+        glideTime = 0.005
+        tOffset = 0.5
+        #fingerForce = 1
+        pluckForce = 0.18
+        pluckForceJitter = 0.02
+        prevString = 0
+        prevFret = [-1 for i in range(6)]
+        pluck_defs = []
+        maxT = 1
+        self.fingerHeight = 0.0;
+
+        finger_defs = ["" for i in range(6)]
+        for i, event in enumerate(events):
+            if isinstance(event, midi.NoteOnEvent):
+                if (event.channel < 17):
+                    #tickScale = 1 - 0.5*(i/float(len(events)))
+                    tickScale = 1
+                    pitch = event.data[0] + transpose
+                    playNote, pitch = self.drumToNoteMap(pitch)
+                    vel = event.data[1]
+                    fingerForce = vel*0.02
+                    pluckForceFromVel = pluckForce * vel * 0.006 
+                    print(fingerForce)
+                    if (fingerForce < 0.5): fingerForce = 0.5
+                    string, fret = midiToStringFret(pitch)
+                    t = (event.tick * ticks_to_seconds_ratio * tickScale) + tOffset;
+                    stringPos = self.getFretPos(fret)
+                    if (playNote):
+                        #stringPos = fretToPos(fret, self.fretPositions, self.distanceBehindFret)
+
+                        if (prevFret[string] == -1):           
+                            # if this string hasn't been used yet
+                            #finger_defs[string] += str(t-(glideTime))+" "+str(stringPos)+" 0"
+                            finger_defs[string] += str(0)+" "+str(0.001)+" "+str(fingerForce*0.125)
+                            finger_defs[string] += "; "+str(t)+" "+str(stringPos)+" "+str(fingerForce) 
+
+                        elif (fret == prevFret[string]):      
+                            # if the last used fret on this string was the same as this one
+                            # add a pluck
+                            self.plucks.append( [string+1, t, round(0.85 + ((r.random()*2-1)*0.06), 3), r.random()*0.0005 + 0.0002, pluckForce + (r.random()*2 - 1)*pluckForceJitter] )
+                        else:
+                            # move the appropriate finger
+                            if alwaysPluck:
+                                self.plucks.append( [string+1, t+0.002, round(0.85 + ((r.random()*2-1)*0.06), 3), r.random()*0.0005 + 0.0002, pluckForce + (r.random()*2 - 1)*pluckForceJitter] )
+                            #prevStringPos = fretToPos(prevFret[string], self.fretPositions, self.distanceBehindFret)
+                            prevStringPos = self.getFretPos(prevFret[string])
+                            finger_defs[string] += "; "+str(t-(glideTime))+" "+str(prevStringPos)+" "+str(fingerForce) 
+                            finger_defs[string] += "; "+str(t)+" "+str(stringPos)+" "+str(fingerForce)
+
+                        prevString = string;   
+                        prevFret[string] = fret;
+                        maxT = t
+
+        maxT = round(maxT+5)
+        return (finger_defs, maxT)
+
+    def drumToNoteMap(self, drumPitch):
+        noteIndex = drumPitch-60
+        playNote = True
+        notes = [40, 52, 40, 57, 59, 42, 55, 62, 67, 66, 59]
+        if (r.random() < 0.25):
+            noteIndex = r.randint(0, len(notes)-1)
+        # NOTE FOR NOTE
+        
+        if noteIndex<0: noteIndex == 0
+        if noteIndex > len(notes)-1: noteIndex = len(notes)-1
+        return playNote, notes[noteIndex]
+        '''
+        # SPARSE VERSION
+        if noteIndex != 0:
+            playNote = False 
+        noteIndex = r.randint(0, len(notes)-1)  
+        return playNote, notes[noteIndex]
+        '''
+
 
 
 def getEventsAndTimings(pattern):
