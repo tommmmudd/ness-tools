@@ -74,6 +74,30 @@ class Sequence(object):
         return len(self.data)
 
 
+def getFretListAll(root, scaleType, stringNotes):
+    fretLists = []
+    for n in stringNotes:
+        fretLists.append(getFretListForString(root, n, scaleType))
+    return fretLists
+
+def getFretListForString(root=0, stringRoot=40, scaleType=0):
+    bounds = [1, 14]
+    baseScale = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 29, 31, 33, 35, 36]
+    if isinstance(scaleType, list):
+        baseScale = scaleType
+    elif scaleType == "diminished":
+        baseScale = [a*3 for a in range(16)]
+    elif scaleType == "wholetone":
+        baseScale = [a*2 for a in range(16)]
+    elif scaleType == "harmonicminor":
+        baseScale = [0, 2, 3, 5, 7, 8, 11, 12, 14, 15, 17, 19, 20, 23, 24, 26, 27, 29, 31, 32, 35, 36]
+    pitchClass = (stringRoot % 12) - root
+    adjustedForString = [a-pitchClass for a in baseScale]
+    fretList = []
+    for f in adjustedForString:
+        if f >= bounds[0] and f <= bounds[1]:
+            fretList.append(f)
+    return fretList
 
 
 def chooseFrom(newSet):
