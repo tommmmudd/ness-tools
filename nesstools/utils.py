@@ -81,7 +81,7 @@ def getFretListAll(root, scaleType, stringNotes):
     return fretLists
 
 def getFretListForString(root=0, stringRoot=40, scaleType=0):
-    bounds = [1, 14]
+    bounds = [1, 16]
     baseScale = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19, 21, 23, 24, 26, 28, 29, 31, 33, 35, 36]
     if isinstance(scaleType, list):
         baseScale = scaleType
@@ -99,6 +99,24 @@ def getFretListForString(root=0, stringRoot=40, scaleType=0):
             fretList.append(f)
     return fretList
 
+
+def findHarmonicFromFretList(fretList, stringCount=6):
+    harmonicToPlay = 2
+    stringToPlay = 0
+    strings = [a for a in range(stringCount)]
+    r.shuffle(strings)
+    for s in strings:
+        for f in fretList[s]:
+            if f==0:
+                stringToPlay = s
+                harmonicToPlay = 2
+                if r.random() < 0.5: harmonicToPlay = 4
+                return stringToPlay, harmonicToPlay
+            if f==7:
+                stringToPlay = s
+                harmonicToPlay = 3
+                return stringToPlay, harmonicToPlay
+    return stringToPlay, harmonicToPlay
 
 def chooseFrom(newSet):
     return newSet[r.randint(0, len(newSet)-1)]
