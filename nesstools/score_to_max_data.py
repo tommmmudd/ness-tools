@@ -1,10 +1,15 @@
 import random as r
 import os
 from shutil import copyfile, move
-# fr MIDI strings
-#import midi
 
-from midiutil.MidiFile import MIDIFile
+# convert breakpoints into a useful Max format
+# plucks converted to triggers
+# data should be importable into a coll
+# e.g.
+# index = string (stratign from 1)
+# then pairs of time and position (don't worry about force for the moment)
+# 0, 0 0 1.5 0 1.51 0.25
+
 
 
 class Pluck:
@@ -28,12 +33,8 @@ maxStrings = 6
 
 #scoreInput = "/Users/tmudd/Downloads/guitar-tutorial/score_tutorial_10.m"
 scoreInput = "/Users/tmudd/Documents/REAPER Media/Guitar Reaper for edits/rapid_mumble_7576/score_rapid_mumble_7576.m"
-midiOutput = scoreInput[0:-2]+".mid"
+maxOutput = scoreInput[0:-2]+".txt"
 
-# first N/2 channels are plucks, remaining N/2 channel is fingers
-midiData = MIDIFile(maxStrings*2)
-midiData.addTempo(0, 0, 120)
-midiData.addTempo(1, 0, 120)
 
 lookForFingers = False
 fCount = 1
@@ -42,6 +43,8 @@ plucks = []
 fingers = []
 
 scoreData = open(scoreInput, 'r')
+textFile = open(maxOutput, 'w')
+
 for line in scoreData:
     if ("exc = pluck_gen" in line):
         elements = line.split(",")
@@ -81,21 +84,36 @@ for line in scoreData:
         #print(line)
    
 
-
+lineNum = 0
 previousPos = 0
+prevT = [0 for i in range(maxStrings)]
+fingerStrings = [str(i)+", " for i in range(maxStrings)]
+pluckText = str(maxStrings) + ", "
 for i, finger in enumerate(fingers):
     if i==0:
         previousPos = finger.pos
+        prevT[finger.s-1] = finger.t
     else:
+        if finger.t > 0 and finger.t > prevT[finger.s-1]:
+            dt = finger.t - prevT[finger.s-1]
+            print(dt)
+            prevT[finger.s-1] = finger.t
+            fingerStrings[finger.s-1] += "%.3f %.3f " % (finger.pos, dt * 1000)
         if previousPos != finger.pos:
             # fingers on channel 2 (==1)
             #print(finger.pos)
             velocity = finger.force * 100
             if velocity > 127: velocity = 127
-            midiData.addNote(maxStrings + (finger.s - 1), 1, int(finger.pos * 100) + 12, finger.t*2, 0.5, velocity)
+            #midiData.addNote(maxStrings + (finger.s - 1), 1, int(finger.pos * 100) + 12, finger.t*2, 0.5, velocity)
 
 for pluck in plucks:
-    midiData.addNote(pluck.s, 1, 60, pluck.t*2, 0.5, pluck.force * 100)
+    pluckText += "%d %.3f %.3f " % (pluck.s + maxStrings, pluck.t * 1000, pluck.force)
+    
+
+for f in fingerStrings:
+    textFile.write(f + ";\n")
+
+textFile.write(pluckText + ";\n")
 
 print("maxstrings: ", maxStrings, fCount)
 # channel, ?, midi note, start time in BEATS, duration, velocity
@@ -105,6 +123,5 @@ print("maxstrings: ", maxStrings, fCount)
 
 
 
-binfile = open(midiOutput, 'wb')
-midiData.writeFile(binfile)
-binfile.close()
+textFile.close()
+scoreData.close()

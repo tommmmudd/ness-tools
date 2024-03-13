@@ -1,10 +1,8 @@
 # NESS FUNCTIONS!!
-from . import brass, utils
+from . import brass
 import random as r
 import os
-import math
 from shutil import copyfile, move
-
 # fr MIDI strings
 import midi
 
@@ -51,9 +49,6 @@ class NESSProject:
         if not os.path.exists(self.directory):
             os.makedirs(self.directory)
             os.makedirs(self.directory+"/wavs")
-            dcScript = open(self.directory+"/wavs/apply_DC_norm.sh", "w")
-            dcScript.write('#!/bin/sh\n\nmkdir originalFiles\nfor f in *.wav; do sox "$f" "${f%.wav}_dc.wav" highpass 10 norm -5.0; mv "$f" originalFiles; done')
-            dcScript.close()
         self.textWrite = open(self.directory+"/"+self.notesName, "w")
 
 
@@ -101,11 +96,6 @@ keys = { # ensure a conversion to lowercase first
         "bb" : 10
 }
 
-azerScaleCents = [0, 108, 160, 200, 264, 400, 440, 500, 612, 700, 800, 900, 920, 1000, 1100]
-azerScaleFretPositions = utils.convertListOfCentsToListOfPositions(azerScaleCents)
-
-
-
 # Major
 stringFretsEThick = [0, 2, 4, 5, 7, 9, 10, 12, 14, 16, 17, 19]
 stringFretsA      = [0, 2, 4, 5, 7, 9, 11, 12, 14, 16, 17, 19]
@@ -138,12 +128,6 @@ fretSets = [fretsEMinor, fretsFMinor, fretsDiminished]
 startingFrets = [40, 45, 50, 55, 59, 64];       # EADGBE
 earthStartingFrets = [33, 40, 45, 50, 54, 59];  # AEADF#B
 frippFrets = [36, 43, 50, 57, 64, 67];          # CGDAEG
-
-
-
-class StringInstrumentSAV(StringInstrument):
-    pass;
-
 
 class StringInstrument(object):
     """String Instrument class for generating instruments for the NESS physical model
@@ -267,19 +251,6 @@ class StringInstrument(object):
         self.extrastrings.append ( NessString(0.34, 2e11, 27.6, 0.0001, 7850, 15, 5) )
         self.extrastrings.append ( NessString(0.34, 2e11, 49.2, 0.0001, 7850, 15, 8) )
  
-    def persianTar6String(self):
-        """CC GG CC"""
-        self.stringCount = 6
-        self.defaultGuitar()
-        self.tuneString(1, 48)
-        self.tuneString(2, 48.01)
-        self.tuneString(3, 55)
-        self.tuneString(4, 54.993)
-        self.tuneString(5, 60.002)
-        self.tuneString(6, 60.0034)
-            
-
-
     def add12String(self):
         self.doubleStrings = True
         self.extrastrings = []
@@ -510,7 +481,7 @@ class StringInstrument(object):
             for i, string in enumerate(self.extrastrings):
                 if not isinstance(string.outputPos, list):
                     # if it's a single value
-                    out.write("; ")
+                    #out.write("; ")
                     out.write(str(i+1+self.stringCount)+" "+str(string.outputPos))
                     if i != (len(self.extrastrings)-1):
                         out.write("; ")
@@ -743,16 +714,13 @@ class GuitarScore(object):
     def playPosition(self, strings=1, t=0, pos=0, glideTime=0.005, fingerForce=2):
         """move a finger on a particular string to a particular position at a particular time. Adds to scorefile parameter fingerStrings[s]"""
         onF = str(fingerForce)
-        
+        if pos < 0: pos = 0
+        if pos > 1.0: pos = 0.99
         if not isinstance(strings, list):
             strings = [strings]  # make it into a list, and 
-        if not isinstance(pos, list):
-            pos = [pos]
-        for s, p in zip(strings, pos):
-            if p < 0: p = 0
-            if p > 1.0: p = 0.99
+        for s in strings:
             s = s-1
-            self.frets[s] = str( p )
+            self.frets[s] = str( pos )
             if self.prevFrets[s] == "":
                 self.prevFrets[s] = self.frets[s]
             self.fingerStrings[s] += str(t-glideTime)+" "+self.prevFrets[s]+" "+onF+"; "
@@ -824,42 +792,24 @@ class GuitarScore(object):
             self.events.append( [ s, t, pos, dur, f, eventType] )
             # event_gen(exc, 1, 0.1, 0.8, 0.001, strength, 0);
 
-    def bendFretUpDown(self, string, t, duration, fret, depthInFrets=1, direction=0, fingerForce=2):
-        pos = self.getFretPosFloat(fret)
-        self.bendPosUpDown(string, t, duration, pos, depthInFrets, direction, fingerForce)
-
-
-    def bendPosUpDown(self, string, t, duration, pos, depthInFrets=1, direction=0, fingerForce=2):
+    def bendUpDown(self, string, t, duration, fret, depthInFrets=1, fingerForce=2):
         dt = 0.004
         phase = 0
         phaseDelta = dt / duration
-        
-        # get fret size
-        upperFret = self.getFretFromPos(pos)
-        fretPos = self.fretPositions[upperFret]
-        fretSize = fretPos - self.fretPositions[max(0, upperFret-1)]
+        fretPosFloat = self.getFretPosFloat(fret)        # use the actual float position as the centre
 
-        # bend down from fret if direction has been changed
-        if direction > 0:
-            depthInFrets *= -1
+        # get fret size
+        fretNum = math.floor(fret)
+        fretPos = self.fretPositions[fretNum]
+        fretSize = fretPos - self.fretPositions[max(0, fretNum-1)]
 
         time = 0
         while time < duration:
             phase += phaseDelta
-            newPos = pos + (depthInFrets * fretSize * math.sin(phase * 3.1415927))
+            newPos = fretPosFloat + (depthInFrets * fretSize * math.sin(phase * 3.1415927))
             self.playPosition(strings=string, t=t, pos=newPos, glideTime=dt*0.99, fingerForce=fingerForce)
             t += dt
             time += dt
-
-
-    def getFretFromPos(self, pos):
-        currentFret = 0
-        for i, fretPos in enumerate(self.fretPositions):
-            if pos < fretPos:
-                currentFret = i
-                break;
-        return currentFret
-
 
     def vibrato(self, string, t, duration, pos, depth=0.04, rate=5, fingerForce=2):
         dt = 0.004
@@ -889,7 +839,6 @@ class GuitarScore(object):
             self.playPosition(strings=string, t=t, pos=newPos, glideTime=dt*0.99, fingerForce=force)
             t += dt
             time += dt
-
 
     def manualStrum(self, strings, t, direction=0, pos=0.8, posVar = 0.05, dur=0.01, f=0.3):
         """Add a pluck to the scorefile parameter 'plucks'"""

@@ -3,3 +3,6 @@ ness_files_to_process/
 old/
 workbench.py
 na_*
+nesstools/*.pyc
+nesstools/old*
+nesstools/__pycache__

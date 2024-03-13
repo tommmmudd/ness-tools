@@ -1,0 +1,57 @@
+﻿Material,Density kg/m^3,Young N/m^2,poisson
+Aluminium,2700,7.00E+10,0.35
+Bismuth,9780,3.20E+10,0.38
+Brass,8500,1.10E+11,0.33
+Bronze,8000,1.00E+11,0.34
+Cesium,1930,1.70E+09,0.3
+Copper,8940,1.20E+11,0.35
+Gold,19300,7.90E+10,0.43
+Iridium,22560,5.20E+11,0.26
+Iron,7870,2.05E+11,0.3
+Lead,11340,1.60E+10,0.43
+Lithium,534,4.90E+09,0.36
+Magnesium,1740,4.30E+10,0.29
+Mercury,13600,2.85E+10,0.5
+Nickel,8900,2.10E+11,0.3
+Osmium,22570,5.50E+11,0.25
+Platinum,21450,1.68E+11,0.39
+Silver,10500,8.30E+10,0.37
+Steel,7700,2.00E+11,0.31
+Tin,7310,4.70E+10,0.35
+Titanium,4540,1.20E+11,0.34
+Tungsten,19250,4.11E+11,0.28
+Zinc,7100,1.08E+11,0.25
+Arsenic,5700,8.00E+09,0.15
+Diamond,3500,1.22E+12,0.2
+Granite,2700,3.00E+10,0.2
+Graphite,1800,2.50E+11,0.13
+Limestone,2700,3.00E+11,0.26
+Marble,2600,6.00E+10,0.16
+Quartz,2650,8.50E+10,0.17
+Sandstone,2000,1.00E+10,0.28
+Sapphire,3980,3.45E+11,0.26
+Shale,2500,1.00E+10,0.3
+Silicon,2330,1.50E+11,0.36
+Uranium,19100,2.08E+11,0.23
+Carbon Fiber,1400,1.00E+12,0.25
+Catgut,1300,6.00E+09,0.3
+Flax Fiber,1450,6.00E+10,0.4
+Hemp Fiber,1480,5.00E+10,0.4
+Horse Hair,1300,6.00E+09,0.4
+Nylon,1175,5.00E+09,0.4
+Silkworm Silk,1340,5.50E+09,0.4
+Spider Silk,1300,3.50E+09,0.4
+Bone,1900,1.20E+10,0.15
+Carrot,1140,1.36E+06,1.25
+Concrete,2400,4.00E+10,0.15
+Cork,225,2.00E+07,0.01
+Glass (Borosilicate),2300,7.00E+10,0.2
+Glass (Soda-Lime),2500,7.10E+10,0.23
+Ice,920,1.20E+10,0.33
+Marshmallow,370,2.90E+04,0.01
+Olive Oil,920,1.35E+09,0.5
+Rubber (hard),1150,1.80E+09,0.49
+Rubber (soft),950,4.00E+06,0.49
+Seawater,1020,2.34E+09,0.5
+Tooth Enamel,2900,8.30E+10,0.28
+Water,1000,2.15E+09,0.5

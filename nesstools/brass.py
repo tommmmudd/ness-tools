@@ -13,7 +13,8 @@ class BrassInstrument(object):
         vPosB = size * (r.random()*0.8 + 0.1)
         vPosC = size * (r.random()*0.8 + 0.1)
         self.valvePositions = [vPosA, vPosB, vPosC]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20, 20, 20]             # vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
+        self.valvePositions.sort()                          # need to be in order?
+        self.shortestTubeLengths = [20, 20, 20]             # vdl, 30 - 2000
         vSizeA = r.random()*1500 + 500
         vSizeB = r.random()*1500 + 500
         vSizeC = r.random()*1500 + 500
@@ -30,41 +31,66 @@ class BrassInstrument(object):
         print( "writing "+self.name+" as: "+fName)
         out = open(fName, "w");
         #%3 valved trombone
-        out.write("% "+self.name+"\n\n")
-        out.write('custominstrument=1;\n')
-        out.write('FS=%.0f;\n' % self.fs)
-        out.write('temperature=%.1f;\n' % self.temperature)
-        out.write('vpos='+writeArray(self.valvePositions)+'\n')
-        out.write('vdl='+writeArray(self.shortestTubeLengths)+'\n')
-        out.write('vbl='+writeArray(self.tubeLengths)+'\n')
-        out.write('xmeg=%.0f;\n' % self.mpLength)
-        out.write('x0eg='+writeArray(self.middleSectionLengths)+'\n')
-        out.write('Leg=%.1f;\n' % self.length)       # tube length
-        out.write('rmeg=%.0f;\n' % self.mpDiameter)
+        out.write("% brversion 1.0\n% "+self.name+"\n\n")
+        
+        out.write("%===============================\n%==== SETUP ====\n")
+        out.write('custominstrument=1;   % this is 0 if you have a real instrument bore\n\n')
+        out.write('% Sample rate\n')
+        out.write('FS=%.0f;\n\n' % self.fs)
+
+        out.write('% Temperature in C\n')
+        out.write('temperature=%.1f;\n\n' % self.temperature)
+
+        out.write("%===============================\n%==== MAIN TUBE ====\n\n")
+        out.write('% Instrument Length\n')
+        out.write('Leg=%.1f;\n\n' % self.length)       # tube length
+        out.write('% Middle Section Lengths\n')
+        out.write('x0eg='+writeArray(self.middleSectionLengths)+'\n\n')
+        out.write("% Middle Section Profiles\n% NOTE: don't need to sum to length.\n% in addition to middle sections we have 2 additional sections: mouthpiece and flare section\n% Must have 3 columns and have the same number of rows as entries for the middle section lengths. \n % First and second entries of each row are the diameters[mm] used in the bore definition. \n% The third entry specifies the type of profile: \n%%% 1 - linear ramp between the two diameters, \n%%% 2 - squared sine bulge whose entrance and exit diameters are the first column entry and maximum is the second diameter entry, \n%%% 3 - cosine ramp between the two diameters.\n")
         out.write('r0eg='+write2DArray(self.middleSectionProfiles)+'\n')
+        out.write('% end diameter of instrument (curves outwards from last middle section length to this diameter)\n')
+        out.write('rbeg=%.1f;\n' % self.endDiameter)
+        out.write('% flare curve exponent for above end diameter\n')
+        out.write('fbeg=%.1f;\n\n' % self.flarePower) # ??
+
+        out.write("%===============================\n%==== VALVES ====\n\n")
+        out.write('% position of valve in mm\n')
+        out.write('vpos='+writeArray(self.valvePositions)+'\n')
+        out.write('% default (shortest) tube length mm\n')
+        out.write('vdl='+writeArray(self.shortestTubeLengths)+'\n')
+        out.write('% bypass (longest) tube length mm (will add default length to either side of bypass tubes)\n')
+        out.write('vbl='+writeArray(self.tubeLengths)+'\n\n')
+        
+        
+        out.write("%===============================\n%==== MOUTHPIECE ====\n\n")
+        out.write('% mouthpiece length\n')
+        out.write('xmeg=%.0f;\n' % self.mpLength)
+        out.write('% mouthpiece diameter\n')
+        out.write('rmeg=%.0f;\n' % self.mpDiameter)
+        
         #out.write('r0eg=[%.0f, %.0f, %.0f; ' % (self.middleSectionProfiles[0][0], self.middleSectionProfiles[0][1], self.middleSectionProfiles[0][2]))
         #out.write('%.0f, %.0f, %.0f; ' % (self.middleSectionProfiles[1][0], self.middleSectionProfiles[1][1], self.middleSectionProfiles[1][2]))
         #out.write('%.0f, %.0f, %.0f];\n' % (self.middleSectionProfiles[2][0], self.middleSectionProfiles[2][1], self.middleSectionProfiles[2][2]))
-        out.write('rbeg=%.1f;\n' % self.endDiameter)
-        out.write('fbeg=%.1f;\n' % self.flarePower) # ??
+        
+        
         out.close()
 
     def deepTrombone(self):
         self.length = 3740                                  # in millimetres I think. So 10000 is long
         self.valvePositions = [540, 630, 1460]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20, 20, 20]             # vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
-        self.tubeLengths = [239.7, 97.5, 449.8]          # vbl, 30 - 2000 ish?
-        self.mpLength = 30                                     # xmeg, mouthpiece length 10 - 30?
-        self.mpDiameter = 25                                # rmeg, mouthpiece diameter 10-40?
+        self.shortestTubeLengths = [20, 20, 20]             # vbl, bypass lengths
+        self.tubeLengths = [239.7, 97.5, 449.8]          # vdl, 30 - 2000
+        self.mpLength = 30                                     # xmeg, mouthpiece length 10 - 30
+        self.mpDiameter = 25                                # rmeg, mouthpiece diameter 10-40
         self.middleSectionLengths = [100, 2320, 623]      # x0eg, middle section lengths in mm (60 - 700?) - for different diameters
-        self.middleSectionProfiles = [[7,14,3], [14,14,1], [14,30,1]]   #r0eg, middle section diameter (mm) and profile specifications (??)
+        self.middleSectionProfiles = [[7,14,3], [14,14,1], [14,30,1]]   #r0eg, middle section difameter (mm) and profile specifications (??)
         self.endDiameter = 200;                             #rbeg, end diameter in mm
         self.flarePower = 2;                          # fbeg
 
     def trumpet(self):
         self.length = 1400                                  # in millimetres I think. So 10000 is long
         self.valvePositions = [600, 630, 660]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20, 20, 20]             # vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
+        self.shortestTubeLengths = [20, 20, 20]             # vdl, 30 - 2000
         self.tubeLengths = [130.7, 57.5, 199.8]          # vbl, 30 - 2000 ish?
         self.mpLength = 10                                     # xmeg, mouthpiece length 10 - 30?
         self.mpDiameter = 20                                # rmeg, mouthpiece diameter 10-40?
@@ -76,7 +102,7 @@ class BrassInstrument(object):
     def trombone(self):
         self.length = 2740                                  # in millimetres I think. So 10000 is long
         self.valvePositions = [600]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20]      # ONLY ONE VALVE!!! vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
+        self.shortestTubeLengths = [20]      
         self.tubeLengths = [130.7]          # vbl, 30 - 2000 ish?
         self.mpLength = 30                                     # xmeg, mouthpiece length 10 - 30?
         self.mpDiameter = 25                                # rmeg, mouthpiece diameter 10-40?
@@ -88,7 +114,7 @@ class BrassInstrument(object):
     def horn(self):
         self.length = 4520                                  # in millimetres I think. So 10000 is long
         self.valvePositions = [600, 630, 660]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20, 20, 20]      # vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
+        self.shortestTubeLengths = [20, 20, 20]      # # vdl, 30 - 2000
         self.tubeLengths = [130.7, 57.5, 199.8]          # vbl, 30 - 2000 ish?
         self.mpLength = 30                                     # xmeg, mouthpiece length 10 - 30?
         self.mpDiameter = 18                                # rmeg, mouthpiece diameter 10-40?
@@ -98,21 +124,21 @@ class BrassInstrument(object):
         self.flarePower = 2;                          # fbeg
 
     def longInstrument(self):
-        self.length = 10000                                  # in millimetres I think. So 10000 is long
-        self.valvePositions = [3500, 4000, 4500]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20, 20, 20]      # vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
-        self.tubeLengths = [1224, 594.6, 1892]          # vbl, 30 - 2000 ish?
-        self.mpLength = 30                                     # xmeg, mouthpiece length 10 - 30?
-        self.mpDiameter = 40                                # rmeg, mouthpiece diameter 10-40?
-        self.middleSectionLengths = [80, 200, 1000, 5000, 695]      # x0eg, middle section lengths in mm (60 - 700?) - for different diameters
+        self.length = 10000                                  
+        self.valvePositions = [3500, 4000, 4500]        
+        self.shortestTubeLengths = [20, 20, 20]      
+        self.tubeLengths = [1224, 594.6, 1892]          
+        self.mpLength = 30                                    
+        self.mpDiameter = 40                                
+        self.middleSectionLengths = [80, 200, 1000, 5000, 695]      
         self.middleSectionProfiles = [[20, 25, 3], [25, 28, 1], [28, 34, 1], [34, 40, 2], [34, 34, 1]]   #r0eg, middle section diameter (mm) and profile specifications (??)
         self.endDiameter = 500;                             #rbeg, end diameter in mm
         self.flarePower = 1.9;                          # fbeg
 
     def trumpetBulge(self):
-        self.length = 1400                                  # in millimetres I think. So 10000 is long
-        self.valvePositions = [600, 630, 660]         # vpos, in millimetres along the length
-        self.shortestTubeLengths = [20, 20, 20]      # vdl, note: I think this means when they're shut?? CHECK WITH STEFAN
+        self.length = 1400                                  
+        self.valvePositions = [600, 630, 660]        
+        self.shortestTubeLengths = [20, 20, 20]      
         self.tubeLengths = [130.7,57.5,199.8]          # vbl, 30 - 2000 ish?
         self.mpLength = 10                                     # xmeg, mouthpiece length 10 - 30?
         self.mpDiameter = 20                                # rmeg, mouthpiece diameter 10-40?

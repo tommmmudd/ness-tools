@@ -12,11 +12,15 @@ class PatternSet(object):
         self.repetitions = 0
 
     def setCurrentPatternIndex(self, newIndex):
-        self.currentPatternIndex = 0 
+        self.currentPatternIndex = newIndex
         self.currentPatternIndex %= len(self.patterns)
         self.repetitions = 0
 
     def addPattern(self, newPattern):
+        self.patterns.append(Sequence(newPattern))
+
+    # duplicate here of above
+    def addSequence(self, newPattern):
         self.patterns.append(Sequence(newPattern))
 
     def addRandomPatternFromSet(self, newSet, length=8):
@@ -28,6 +32,9 @@ class PatternSet(object):
         if self.isAboutToLoop:
             self.repetitions += 1
         return output
+
+    def rewind(self):
+        self.patterns[self.currentPatternIndex].rewind()
 
     def getCurrent(self):
         return self.patterns[self.currentPatternIndex].getCurrent()
@@ -99,8 +106,8 @@ def getFretListForString(root=0, stringRoot=40, scaleType=0):
             fretList.append(f)
     return fretList
 
-
-def findHarmonicFromFretList(fretList, stringCount=6):
+# return [string int, harmonic int]  where harmonic is e.g. 2, 3, 4 not the actual position
+def findHarmonicFromFretList(fretList, stringCount=6, maxHarmonic=3):
     harmonicToPlay = 2
     stringToPlay = 0
     strings = [a for a in range(stringCount)]
@@ -116,6 +123,21 @@ def findHarmonicFromFretList(fretList, stringCount=6):
                 stringToPlay = s
                 harmonicToPlay = 3
                 return stringToPlay, harmonicToPlay
+            if maxHarmonic > 3:
+                if f == 4:
+                    stringToPlay = s
+                    harmonicToPlay = 5
+                    return stringToPlay, harmonicToPlay
+            if maxHarmonic > 4:
+                if f == 10:
+                    stringToPlay = s
+                    harmonicToPlay = 7
+                    return stringToPlay, harmonicToPlay
+            if maxHarmonic > 5:
+                if f == 2:
+                    stringToPlay = s
+                    harmonicToPlay = 9
+                    return stringToPlay, harmonicToPlay
     return stringToPlay, harmonicToPlay
 
 def chooseFrom(newSet):
