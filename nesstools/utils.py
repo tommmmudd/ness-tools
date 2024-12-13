@@ -3,6 +3,7 @@ from . import brass
 import random as r
 import os
 from shutil import copyfile, move
+import math
 
 
 class PatternSet(object):
@@ -80,6 +81,34 @@ class Sequence(object):
     def length(self):
         return len(self.data)
 
+
+def centToRatio(cent):
+    return math.floor(1000000 * math.pow(2, (cent/100/12))) / 1000000;
+
+def convertListOfCentsToListOfPositions(centsList):
+    """ requires utils function utils.centToRatio() """
+    scaleRatioList = []
+    fretPositionList = []
+    for cent in centsList:
+        scaleRatioList.append(centToRatio(cent))
+
+    octaveRatios = []
+    for ratio in scaleRatioList:
+        octaveRatios.append(ratio * 2.0)
+    for ratio in scaleRatioList:
+        octaveRatios.append(ratio * 3.0)
+    for ratio in scaleRatioList:
+        octaveRatios.append(ratio * 4.0)
+
+    for ratio in scaleRatioList:
+        # conversion to pos (0-1) is 1 - (1/ratio)
+        convertedRatio = 1.0 - (1.0/float(ratio))   
+        fretPositionList.append( convertedRatio )
+    for ratio in octaveRatios:
+        convertedRatio = 1.0 - (1.0/float(ratio))   
+        fretPositionList.append( convertedRatio )
+
+    return fretPositionList
 
 def getFretListAll(root, scaleType, stringNotes):
     fretLists = []
