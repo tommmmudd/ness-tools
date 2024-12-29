@@ -41,12 +41,10 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 # How to run these files
 - Clone or download this repository
 - Open a terminal and cd to the folder.
-- type "python gtr_score_1_basic_plucks.py" (or whichever file you wish to run)
+- type ```python gtr_score_1_basic_plucks.py``` (or whichever file you wish to run)
 - This should create both a score file and an instrument file in the "ness_files_to_process" folder
-- Upload these files to the [NESS User Interface](https://ness-frontend.eca.ed.ac.uk/) to create audio files
-- You will need to register for an account:
-- 1) Register for an EASE Friend account with the University of Edinburgh: https://www.ease.ed.ac.uk/friend/
-- 2) Then email the NESS team synthesis@epcc.ed.ac.uk, including your EASE username (usually your email address) in the email.  You will then be added to the user access list for the NESS web UI.
+- Process these files with the [NESS Code framework](https://github.com/Edinburgh-Acoustics-and-Audio-Group/ness/releases/tag/v0.1.1)
+- This is again a command line process, e.g. ```./ness-framework -s path/to/scorefile.m -i path/to/instrumentfile.m```
 
 
 # Example implementation
