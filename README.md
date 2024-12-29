@@ -44,7 +44,8 @@ Below are a some tutorials that give you an idea of how to use these tools for e
 - type ```python gtr_score_1_basic_plucks.py``` (or whichever file you wish to run)
 - This should create both a score file and an instrument file in the "ness_files_to_process" folder
 - Process these files with the [NESS Code framework](https://github.com/Edinburgh-Acoustics-and-Audio-Group/ness/releases/tag/v0.1.1)
-- This is again a command line process, e.g. ```./ness-framework -s path/to/scorefile.m -i path/to/instrumentfile.m```
+- This is again a command line process, where ```-s``` and ```-i``` flags need to be set for the input score and instrument files,
+  - e.g. ```./ness-framework -s path/to/scorefile.m -i path/to/instrumentfile.m```
 
 
 # Example implementation
