@@ -6,10 +6,9 @@ Here we will create text files that describe a virtual instrument (instrument fi
 [<-- Back to index](https://tommmmudd.github.io/ness-tools/) / / / [Next Tutorial -->](https://tommmmudd.github.io/ness-tools/tutorials/raw-files-tutorial2/)
 
 ## To run these files
-- You will need to register for an account:
-- 1) Register for an EASE Friend account with the University of Edinburgh: https://www.ease.ed.ac.uk/friend/
-- 2) Then email the NESS team synthesis@epcc.ed.ac.uk, including your EASE username (usually your email address) in the email.  You will then be added to the user access list for the NESS web UI.
-- Upload your score and instrument .m files to the [NESS User Interface](https://ness-frontend.eca.ed.ac.uk/) to create audio files
+- Process these files with the [NESS Code framework](https://github.com/Edinburgh-Acoustics-and-Audio-Group/ness/releases/tag/v0.1.1)
+- This is a command line process, where ```-s``` and ```-i``` flags need to be set for the input score and instrument files,
+  - e.g. ```./ness-framework -s /path/to/scorefile.m -i /path/to/instrumentfile.m```
 
 ## To edit these files
 You will need a simple text editor. Notepad or TextEdit will do, but something with syntax highlighting might be useful, e.g. [Sublime Text](https://www.sublimetext.com/) or [Atom](https://atom.io/)
