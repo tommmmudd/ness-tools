@@ -1,6 +1,6 @@
 # NESS Python library
 
-This library presents some Python classes for building score and instrument files for the [NESS physical models](http://ness.music.ed.ac.uk).
+This library presents some Python classes for building score and instrument files for the [NESS physical models](https://www.ness.music.ed.ac.uk).
 
 Below are a some tutorials that give you an idea of how to use these tools for engaging with the Ness models.
 
